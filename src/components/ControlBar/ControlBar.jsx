@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { DEFAULT_ARRAY_SIZE, DEFAULT_SELECTED_SPEED, MAX_ARRAY_SIZE, MIN_ARRAY_SIZE, SORTING_SPEED_UPPER_LIMIT } from "../../defaults";
 import "./ControlBar.css";
 
 class ControlBar extends Component {
@@ -20,6 +21,10 @@ class ControlBar extends Component {
   changeSpeed = (event) => {
     const selectedSpeed = (Number)(event.target.value);
     this.props.changeSpeed(selectedSpeed);
+  }
+
+  startSorting = () => {
+    this.props.sort();
   }
 
   componentDidMount() {
@@ -69,9 +74,9 @@ class ControlBar extends Component {
           <input
             className='array-size-range-button mb-1'
             type="range"
-            min="10"
-            max="200"
-            defaultValue="100"
+            min={MIN_ARRAY_SIZE}
+            max={MAX_ARRAY_SIZE}
+            defaultValue={DEFAULT_ARRAY_SIZE}
             onChange={this.changeArraySize}
           />
 
@@ -79,13 +84,18 @@ class ControlBar extends Component {
             className='sorting-speed-range-button mt-1'
             type="range"
             min="1"
-            max="100"
-            defaultValue="50"
+            max={SORTING_SPEED_UPPER_LIMIT}
+            defaultValue={DEFAULT_SELECTED_SPEED}
             onChange={this.changeSpeed}
           />
         </div>
 
-        <button className="btn btn-success mr-4 col-2"> START SORTING </button>
+        <button
+          className="btn btn-success mr-4 col-2"
+          onClick={this.startSorting}
+        >
+          START SORTING
+        </button>
 
       </div>
     )

@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { setArray } from "../../actions/array";
 import { setAlgorithm } from "../../actions/algorithm";
 import { setSpeed } from "../../actions/speed/index.js";
+import { ARRAY_MIN_VALUE, ARRAY_MAX_VALUE } from "../../defaults/index.js";
 import { bubbleSort, mergeSort, quickSort } from "../../algorithms"
 
 //returns a random value between low and up limit [both inclusive]
@@ -13,8 +14,8 @@ const getRandomValue = (lowerLimit, upperLimit) => {
 //generates a random array of 'arraySize'
 const generateRandomArray = (arraySize) => {
     const array = [];
-    const lowerLimit = 75;
-    const upperLimit = 400;
+    const lowerLimit = ARRAY_MIN_VALUE;
+    const upperLimit = ARRAY_MAX_VALUE;
     for (var i = 0; i < arraySize; i++) {
         array.push(getRandomValue(lowerLimit, upperLimit));
     }

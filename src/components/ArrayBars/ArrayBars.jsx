@@ -2,12 +2,12 @@ import React, { Component } from "react";
 import "./ArrayBars.css";
 
 class ArrayBars extends Component {
-    
+
     getMarginBetweenBars = (arraySize) => {
         const marginBetween = arraySize <= 10 ? 4 : arraySize <= 50 ? 2 : 1;
         return marginBetween;
     }
-    
+
     getBarsDisplayAreaWidth = (arraySize) => {
         const screenWidth = window.screen.width;
         const perecntageScreenToOccupy = arraySize <= 10 ? 0.33 : arraySize <= 50 ? 0.50 : 0.66;
@@ -35,8 +35,9 @@ class ArrayBars extends Component {
             < div className="bars" style={{ width: barsDisplayAreaWidth }}>
                 {
                     array.length > 0 && array.map((bar, idx) => {
+                        const backgroundColor = (idx !== 0 && array[idx] < array[idx - 1]) ? 'blue' : 'blue'
                         return (
-                            <div className="bar" style={{ width: barWidth, height: bar, marginLeft: (idx !== 0 ? marginBetween : 0) }} key={idx}>
+                            <div id={idx} className="bar" style={{ width: barWidth, height: bar, backgroundColor: backgroundColor, marginLeft: (idx !== 0 ? marginBetween : 0) }} key={idx}>
                                 {displayBarHeight ? bar : ''}
                             </div>
                         );
