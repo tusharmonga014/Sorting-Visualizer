@@ -2,10 +2,6 @@ import React, { Component } from "react";
 import "./ArrayBars.css";
 
 class ArrayBars extends Component {
-
-    constructor(props) {
-        super(props);
-    }
     
     getMarginBetweenBars = (arraySize) => {
         const marginBetween = arraySize <= 10 ? 4 : arraySize <= 50 ? 2 : 1;
@@ -40,7 +36,7 @@ class ArrayBars extends Component {
                 {
                     array.length > 0 && array.map((bar, idx) => {
                         return (
-                            <div className="bar" style={{ width: barWidth, height: bar, marginLeft: (idx != 0 ? marginBetween : 0) }} key={idx}>
+                            <div className="bar" style={{ width: barWidth, height: bar, marginLeft: (idx !== 0 ? marginBetween : 0) }} key={idx}>
                                 {displayBarHeight ? bar : ''}
                             </div>
                         );

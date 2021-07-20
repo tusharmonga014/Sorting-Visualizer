@@ -2,6 +2,7 @@ import ControlBar from "./ControlBar.jsx";
 import { connect } from "react-redux";
 import { setArray } from "../../actions/array";
 import { setAlgorithm } from "../../actions/algorithm";
+import { setSpeed } from "../../actions/speed/index.js";
 
 //returns a random value between low and up limit [both inclusive]
 const getRandomValue = (lowerLimit, upperLimit) => {
@@ -19,6 +20,17 @@ const generateRandomArray = (arraySize) => {
     return array;
 }
 
+//converts the algorithm name to all capital seperated by a '_'
+const convertAlgorithmNameToSpecific = (selectedAlgo) => {
+    switch (selectedAlgo) {
+        case 'Bubble Sort': return 'BUBBLE_SORT'
+        case 'Merge Sort': return 'MERGE_SORT'
+        case 'Quick Sort': return 'QUICK_SORT'
+        case 'Sort': return 'SORT'
+        default: return ''
+    }
+}
+
 const mapStateToProps = (state) => {
     const array = state.array;
     const algorithm = state.algorithm;
@@ -34,7 +46,15 @@ const mapDispatchToProps = () => dispatch => ({
     },
 
     //setting the algorithm through dispatch
-    setAlgorithm: () => { dispatch(setAlgorithm('BUBBLE')) }
+    changeAlgorithm: (selectedAlgo) => {
+        const specificAlgoName = convertAlgorithmNameToSpecific(selectedAlgo);
+        dispatch(setAlgorithm(specificAlgoName));
+    },
+
+    //changing the sorting display speed of algorithm
+    changeSpeed: (selectSpeed) => {
+        dispatch(setSpeed(selectSpeed));
+    }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ControlBar);
