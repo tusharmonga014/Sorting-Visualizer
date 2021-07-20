@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { setArray } from "../../actions/array";
 import { setAlgorithm } from "../../actions/algorithm";
 import { setSpeed } from "../../actions/speed/index.js";
+import { bubbleSort, mergeSort, quickSort } from "../../algorithms"
 
 //returns a random value between low and up limit [both inclusive]
 const getRandomValue = (lowerLimit, upperLimit) => {
@@ -54,6 +55,11 @@ const mapDispatchToProps = () => dispatch => ({
     //changing the sorting display speed of algorithm
     changeSpeed: (selectSpeed) => {
         dispatch(setSpeed(selectSpeed));
+    },
+
+    //starts the sorting
+    sort: () => {
+        bubbleSort();
     }
 });
 
