@@ -138,15 +138,25 @@ function merge(localArray, leftIdx, midIdx, rightIdx) {
         k++;
     }
 
+    /**
+     * Reason for IMPORTANT in below steps : 
+     * Pushing the changes for even one 
+     * subarray is important as, if not done then 
+     * at last if some changes were made to array, 
+     * they will not get recorded, but such changes 
+     * 'in between' will get updated by next merge changes
+     */
+
     // Copy the remaining elements of
     // leftLocalArray[], if there are any
     while (i < n1) {
         localArray[k] = leftLocalArray[i];
-        // Queue.push({
-        //     array: localArray.slice(),
-        //     firstIdx: leftIdx + i,
-        //     secondIdx: -1
-        // });
+        // IMPORTANT
+        Queue.push({
+            array: localArray.slice(),
+            firstIdx: -1,
+            secondIdx: -1
+        });
         i++;
         k++;
     }
@@ -155,11 +165,12 @@ function merge(localArray, leftIdx, midIdx, rightIdx) {
     // rightLocalArrau[], if there are any
     while (j < n2) {
         localArray[k] = rightLocalArray[j];
-        // Queue.push({
-        //     array: localArray.slice(),
-        //     firstIdx: -1,
-        //     secondIdx: leftIdx + j
-        // });
+        // IMPORTANT 
+        Queue.push({
+            array: localArray.slice(),
+            firstIdx: -1,
+            secondIdx: -1
+        });
         j++;
         k++;
     }
