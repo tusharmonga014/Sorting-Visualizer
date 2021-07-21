@@ -1,37 +1,42 @@
 /**
- * .......................
- * Array bars height range
- * .......................
- * ARRAY_MAX_VALUE > 500 will overlap with Control-Bar
+ * Array's lowest value
  */
 const ARRAY_MIN_VALUE = 40;
+/**
+ * Array's largest value
+ * ARRAY_MAX_VALUE > 500 will overlap with Control-Bar
+ */
 const ARRAY_MAX_VALUE = 400;
 
 /**
- * ...................
  * Sorting speed range
- * ...................
  * SORTING_SPEED_LOWER_LIMIT is 0 always
  */
 const SORTING_SPEED_UPPER_LIMIT = 800;
 const DEFAULT_SELECTED_SPEED = 600;
 
 /**
- * ............
- * Array length
- * ............
+ * Minimum array length
  */
 const MIN_ARRAY_SIZE = 10;
+/**
+ * Maximum array length
+ */
 const MAX_ARRAY_SIZE = 200;
 const DEFAULT_ARRAY_SIZE = 100;
 
 /**
- * .............
- * Colour Scheme
- * .............
+ * Bar colour when its neither sorted 
+ * nor in the process of being sorted
  */
 const BAR__COLOUR_DEFAULT = 'blue';
+/**
+ * Bar colour when its in the process for sorting
+ */
 const BAR_COLOUR_WHILE_CHECKING = 'green';
+/**
+ * Bar colour when it has been sorted
+ */
 const BAR_COLOUR_SORTED = 'purple';
 
 

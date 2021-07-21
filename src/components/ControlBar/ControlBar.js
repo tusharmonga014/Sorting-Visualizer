@@ -1,19 +1,28 @@
 import ControlBar from "./ControlBar.jsx";
 import { connect } from "react-redux";
 import { ARRAY_MIN_VALUE, ARRAY_MAX_VALUE } from "../../defaults/index.js";
-import { bubbleSort, mergeSort, quickSort } from "../../algorithms"
+import sort from "../../algorithms"
 import { setArray } from "../../actions/array";
 import { setSpeed } from "../../actions/speed/index.js";
 import { setSortedArray } from "../../actions/sortedArray/index.js";
 import { setAlgorithm } from "../../actions/algorithm";
 import { setCurrentlyChecking } from "../../actions/currentlyChecking/index.js";
 
-//returns a random value between low and up limit [both inclusive]
+/**
+ * Return a random value in specified range
+ * @param {*} lowerLimit Least possible random number
+ * @param {*} upperLimit Larget possible random number
+ * @returns A random number between lowerLimit and UpperLimit (both inclusive)
+ */
 const getRandomValue = (lowerLimit, upperLimit) => {
     return Math.floor(Math.random() * (upperLimit + 1)) + lowerLimit;
 }
 
-//generates a random array of 'arraySize'
+/**
+ * Returns a random array pf specified Length
+ * @param {*} arraySize Length of the array to be formed
+ * @returns A random values array of length = arraySize
+ */ 
 const generateRandomArray = (arraySize) => {
     const array = [];
     const lowerLimit = ARRAY_MIN_VALUE;
@@ -22,17 +31,6 @@ const generateRandomArray = (arraySize) => {
         array.push(getRandomValue(lowerLimit, upperLimit));
     }
     return array;
-}
-
-//converts the algorithm name to all capital seperated by a '_'
-const convertAlgorithmNameToSpecific = (selectedAlgo) => {
-    switch (selectedAlgo) {
-        case 'Bubble Sort': return 'BUBBLE_SORT'
-        case 'Merge Sort': return 'MERGE_SORT'
-        case 'Quick Sort': return 'QUICK_SORT'
-        case 'Sort': return 'SORT'
-        default: return ''
-    }
 }
 
 /**
@@ -53,30 +51,40 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = () => dispatch => ({
 
-    //generating a random array of 'arraySize' and setting it through dispatch
+    /**
+     * Generats a random array of given size and sets it through dispatch
+     * @param {*} arraySize Length of the array to be generated
+     */
     generateArray: (arraySize) => {
         const randomGeneratedArray = generateRandomArray(arraySize);
         dispatch(setArray(randomGeneratedArray));
         empty_CurrentlyArray_and_SortedArray(dispatch);
     },
 
-    //setting the algorithm through dispatch
+    /**
+     * Changes the algorithm through dispatch
+     * @param {*} selectedAlgo New algorithm to be set 
+     */
     changeAlgorithm: (selectedAlgo) => {
         empty_CurrentlyArray_and_SortedArray(dispatch);
-        const specificAlgoName = convertAlgorithmNameToSpecific(selectedAlgo);
-        dispatch(setAlgorithm(specificAlgoName));
+        dispatch(setAlgorithm(selectedAlgo));
     },
 
-    //changing the sorting display speed of algorithm
-    changeSpeed: (selectSpeed) => {
+    /**
+     * Changes the sorting display speed of algorithm
+     * @param {*} selectedSpeed Selected Speed
+     */
+    changeSpeed: (selectedSpeed) => {
         empty_CurrentlyArray_and_SortedArray(dispatch);
-        dispatch(setSpeed(selectSpeed));
+        dispatch(setSpeed(selectedSpeed));
     },
 
-    //starts the sorting
+    /**
+     * Starts the sorting
+     */
     sort: () => {
         empty_CurrentlyArray_and_SortedArray(dispatch);
-        bubbleSort();
+        sort();
     }
 });
 

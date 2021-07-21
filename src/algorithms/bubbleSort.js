@@ -1,28 +1,8 @@
 import { store } from "../store";
 import { swapValues } from "../actions/array";
 import { setCurrentlyChecking } from "../actions/currentlyChecking";
-import { SORTING_SPEED_UPPER_LIMIT } from "../defaults";
 import { addToSortedArray } from "../actions/sortedArray";
-
-/**
- * 
- * @param {*} storeElementPayload The payload for the store element whose state needs to be updated
- * @param {*} storeElementReducer The reducer for that specific change to the element
- */
-function storeDispatch(storeElementPayload, storeElementReducer) {
-    store.dispatch(storeElementReducer(storeElementPayload));
-}
-
-/**
- * @returns the timedelay between each step,
- *          so if speed is 10 and speed range is 0-100
- *          timedelay will be of 90ms
- */
-function timeDelay() {
-    const state = store.getState();
-    const speed = state.speed;
-    return SORTING_SPEED_UPPER_LIMIT - speed;
-}
+import { getTimeDelay, storeDispatch } from "./helpers";
 
 // executes after the loop and dispatches after timeDelays
 function timer(i, j, arraySize, needToSwap, addToSorted, timeDelayIterator) {
@@ -39,24 +19,28 @@ function timer(i, j, arraySize, needToSwap, addToSorted, timeDelayIterator) {
 
         setTimeout(() => {
             storeDispatch([], setCurrentlyChecking);
-        }, timeDelayIterator * timeDelay());
+        }, timeDelayIterator * getTimeDelay());
 
         if (addToSorted) {
             storeDispatch(j + 1, addToSortedArray);
             /**
              * As the bar at 0th position also needs 
-             * to be added to sortedArray
+             * to be added to sortedArray, which doesn't 
+             * get called from inside j loop
              */
             if (i === arraySize - 2) {
                 storeDispatch(0, addToSortedArray);
             }
         }
 
-    }, timeDelayIterator * timeDelay());
+    }, timeDelayIterator * getTimeDelay());
 
 };
 
-const bubbleSort = () => {
+/**
+ * Performs Bubble Sort on the store's Array
+ */
+function bubbleSort() {
 
     // gets current state object
     const state = store.getState();

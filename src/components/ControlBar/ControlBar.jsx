@@ -1,5 +1,7 @@
 import React, { Component } from "react";
+import { setValue } from "../../actions/array";
 import { DEFAULT_ARRAY_SIZE, DEFAULT_SELECTED_SPEED, MAX_ARRAY_SIZE, MIN_ARRAY_SIZE, SORTING_SPEED_UPPER_LIMIT } from "../../defaults";
+import { store } from "../../store";
 import "./ControlBar.css";
 
 class ControlBar extends Component {
@@ -12,10 +14,27 @@ class ControlBar extends Component {
     this.resetArray(event.target.value);
   }
 
+  /**
+   * Returns the algorithm name in Title Case
+   * @param {*} algorithm The algorithm whose name is to be returned in Title Case
+   * @returns Algorithm name in Title Case
+   */
+  getAlgorithmNameInTitleCase = (algorithm) => {
+    switch (algorithm) {
+      case 'BUBBLE_SORT': return 'Bubble Sort';
+      case 'MERGE_SORT': return 'Merge Sort';
+      case 'QUICK_SORT': return 'Quick Sort';
+      default: {
+        console.error('No algorithm provided for conversion to title case');
+      }
+    }
+  }
+
   changeAlgorithm = (event) => {
     const selectedAlgo = event.target.value;
-    document.getElementById("dropdown-algo-selector").innerText = selectedAlgo;
     this.props.changeAlgorithm(selectedAlgo);
+    const selectedAlgoTitleCase = this.getAlgorithmNameInTitleCase(selectedAlgo);
+    document.getElementById("dropdown-algo-selector").innerText = selectedAlgoTitleCase;
   }
 
   changeSpeed = (event) => {
@@ -53,13 +72,11 @@ class ControlBar extends Component {
               Bubble Sort
             </button>
             <div className="dropdown-menu">
-              <button className="dropdown-item" value='Bubble Sort' onClick={this.changeAlgorithm}>Bubble Sort</button>
+              <button className="dropdown-item" value='BUBBLE_SORT' onClick={this.changeAlgorithm}>Bubble Sort</button>
               <div className="dropdown-divider"></div>
-              <button className="dropdown-item" value='Merge Sort' onClick={this.changeAlgorithm}>Merge Sort</button>
+              <button className="dropdown-item" value='MERGE_SORT' onClick={this.changeAlgorithm}>Merge Sort</button>
               <div className="dropdown-divider"></div>
-              <button className="dropdown-item" value='Quick Sort' onClick={this.changeAlgorithm}>Quick Sort</button>
-              <div className="dropdown-divider"></div>
-              <button className="dropdown-item" value=' Sort' onClick={this.changeAlgorithm}>Another Sort</button>
+              <button className="dropdown-item" value='QUICK_SORT' onClick={this.changeAlgorithm}>Quick Sort</button>
             </div>
           </div>
         </div>
@@ -96,6 +113,8 @@ class ControlBar extends Component {
         >
           START SORTING
         </button>
+
+        <button onClick={() => { store.dispatch(setValue(0, 100)) }}>Tester Button Does Random Funckin Stuff!</button>
 
       </div>
     )

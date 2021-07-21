@@ -1,4 +1,4 @@
-const checkIfIndexOutOfBounds = (index, arraySize) => {
+function checkIfIndexOutOfBounds(index, arraySize) {
     if (index < 0 || index >= arraySize) {
         console.error(index + " passed for swapping is out of bounds for " + arraySize + ", can't swap values.");
         return true;
@@ -12,7 +12,7 @@ const checkIfIndexOutOfBounds = (index, arraySize) => {
  * @param {*} swappingIndicesArray An Array of 2 indices whose values are to be swapped
  * @returns A new array with swapped values
  */
-export const getNewArrayWithSwappedValues = (array, swappingIndicesArray) => {
+export function getNewArrayWithSwappedValues(array, swappingIndicesArray) {
 
     // show error if exactly 2 indices are not passed
     if (swappingIndicesArray.length !== 2) {
