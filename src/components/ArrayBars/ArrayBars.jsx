@@ -1,18 +1,17 @@
 import React, { Component } from "react"
-import { BAR_COLOUR_SORTED, BAR_COLOUR_WHILE_CHECKING, BAR__COLOUR_DEFAULT } from "../../defaults";
+import { BAR_COLOUR_SORTED, BAR_COLOUR_WHILE_CHECKING, BAR__COLOUR_DEFAULT, MARGIN_BETWEEN_BARS, SCREEN_PERCENTAGE_TO_OCCUPY } from "../../defaults";
 import "./ArrayBars.css";
 
 class ArrayBars extends Component {
 
     getMarginBetweenBars = (arraySize) => {
-        const marginBetween = arraySize <= 10 ? 4 : arraySize <= 50 ? 2 : 1;
+        const marginBetween = MARGIN_BETWEEN_BARS(arraySize);
         return marginBetween;
     }
 
     getBarsDisplayAreaWidth = (arraySize) => {
         const screenWidth = window.screen.width;
-        const perecntageScreenToOccupy = arraySize <= 10 ? 0.33 : arraySize <= 50 ? 0.50 : 0.66;
-        const barsDisplayAreaWidth = Math.floor(screenWidth * perecntageScreenToOccupy);
+        const barsDisplayAreaWidth = Math.floor(screenWidth * SCREEN_PERCENTAGE_TO_OCCUPY(arraySize));
         return barsDisplayAreaWidth;
     }
 
@@ -39,7 +38,7 @@ class ArrayBars extends Component {
                         let backgroundColor = currentlyChecking.includes(idx) ? BAR_COLOUR_WHILE_CHECKING : BAR__COLOUR_DEFAULT;
                         backgroundColor = sortedArray.includes(idx) ? BAR_COLOUR_SORTED : backgroundColor;
                         return (
-                            <div id={idx} className="bar" style={{ width: barWidth, height: bar, backgroundColor: backgroundColor, marginLeft: (idx !== 0 ? marginBetween : 0) }} key={idx}>
+                            <div id={idx} className="bar" style={{ width: barWidth, height: bar, backgroundColor: backgroundColor, marginLeft: marginBetween }} key={idx}>
                                 {displayBarHeight ? bar : ''}
                             </div>
                         );

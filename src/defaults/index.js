@@ -31,14 +31,36 @@ const DEFAULT_ARRAY_SIZE = 100;
  * .............
  */
 const BAR__COLOUR_DEFAULT = 'blue';
-const BAR_COLOUR_WHILE_CHECKING = 'red';
-const BAR_COLOUR_SORTED = 'green';
+const BAR_COLOUR_WHILE_CHECKING = 'green';
+const BAR_COLOUR_SORTED = 'purple';
+
 
 /**
  * Default selected sorting algorithm
  * shown in dropdown algo selector
  */
 const DEFAULT_SELECTED_ALGORITHM = 'BUBBLE_SORT';
+
+/**
+ * tells margin between bars
+ * @param {*} arraySize the length of array 
+ * @returns space between each bar depending upon the arraySize
+ */
+const MARGIN_BETWEEN_BARS = (arraySize) => {
+    return arraySize <= 10 ? 4 : arraySize <= 50 ? 2 : 1
+};
+
+/**
+ * tells the amount of screen to occupy
+ * @param {*} arraySize the length of the array
+ * @returns the amount of screen to occupy in 
+ *          terms of decimal from 0-1 where 
+ *          0 shows empty space and
+ *          1 shows full screen 
+ */
+const SCREEN_PERCENTAGE_TO_OCCUPY = (arraySize) => {
+    return arraySize <= 10 ? 0.33 : arraySize <= 50 ? 0.50 : 0.66;
+}
 
 /**
  * .............................
@@ -56,5 +78,7 @@ export {
     BAR__COLOUR_DEFAULT,
     BAR_COLOUR_WHILE_CHECKING,
     BAR_COLOUR_SORTED,
-    DEFAULT_SELECTED_ALGORITHM
+    DEFAULT_SELECTED_ALGORITHM,
+    MARGIN_BETWEEN_BARS,
+    SCREEN_PERCENTAGE_TO_OCCUPY
 }

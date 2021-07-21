@@ -2,7 +2,7 @@ import { store } from "../store";
 import { swapValues } from "../actions/array";
 import { setCurrentlyChecking } from "../actions/currentlyChecking";
 import { SORTING_SPEED_UPPER_LIMIT } from "../defaults";
-import { addToSortedArray, setSortedArray } from "../actions/sortedArray";
+import { addToSortedArray } from "../actions/sortedArray";
 
 /**
  * 
@@ -39,7 +39,7 @@ function timer(i, j, arraySize, needToSwap, addToSorted, timeDelayIterator) {
 
         setTimeout(() => {
             storeDispatch([], setCurrentlyChecking);
-        }, (timeDelayIterator * timeDelay()) + (needToSwap ? 1000 : 0));
+        }, timeDelayIterator * timeDelay());
 
         if (addToSorted) {
             storeDispatch(j + 1, addToSortedArray);
@@ -62,9 +62,7 @@ const bubbleSort = () => {
     const state = store.getState();
 
     /**
-     * --NOTE ABOUT setTimeout FUNCTION--
-     * 
-     * setTimeout function inside a loop stacks up and
+     * setTimeout() function inside a loop stacks up and
      * executes only after the loopand all the iterations 
      * start together at same time
      * 
@@ -75,7 +73,6 @@ const bubbleSort = () => {
 
 
     /**
-     * --IMPORTANT--
      * Here .slice() is really important as
      * only then react will be able to spot a difference 
      * in the originally stored array's state and 
@@ -109,13 +106,13 @@ const bubbleSort = () => {
             }
 
             /** 
-             * Timer() uses j's value to update currentlyChecking and if needToSwap 
-             * is true then also swaps array using j's value
+             * Timer() uses j's value to update currentlyChecking and if 
+             * needToSwap is true then also swaps array using j's value
              * THIS ALL HAPPENS AFTER THESE LOOPS HAVE EXECUTED
              */
             timer(i, j, arraySize, needToSwap, addToSorted, timeDelayIterator);
 
-            timeDelayIterator++;
+            timeDelayIterator += 1;
 
         }
     }

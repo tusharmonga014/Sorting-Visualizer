@@ -1,12 +1,11 @@
 import ControlBar from "./ControlBar.jsx";
 import { connect } from "react-redux";
-import { setArray, swapValues } from "../../actions/array";
-import { setAlgorithm } from "../../actions/algorithm";
-import { setSpeed } from "../../actions/speed/index.js";
 import { ARRAY_MIN_VALUE, ARRAY_MAX_VALUE } from "../../defaults/index.js";
 import { bubbleSort, mergeSort, quickSort } from "../../algorithms"
+import { setArray } from "../../actions/array";
+import { setSpeed } from "../../actions/speed/index.js";
 import { setSortedArray } from "../../actions/sortedArray/index.js";
-import { currentlyChecking } from "../../reducers/currenltyCheckingReducer/index.js";
+import { setAlgorithm } from "../../actions/algorithm";
 import { setCurrentlyChecking } from "../../actions/currentlyChecking/index.js";
 
 //returns a random value between low and up limit [both inclusive]
@@ -36,6 +35,11 @@ const convertAlgorithmNameToSpecific = (selectedAlgo) => {
     }
 }
 
+/**
+ * Takes the dispatch method as argument 
+ * and dispatches the methods for reseting 
+ * sortedArray and currentlyChecking array
+ */
 const empty_CurrentlyArray_and_SortedArray = (dispatch) => {
     dispatch(setCurrentlyChecking([]));
     dispatch(setSortedArray([]));
