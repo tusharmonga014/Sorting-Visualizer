@@ -1,17 +1,36 @@
 import { store } from "../store";
-import { setArray } from "../actions/array";
+import { setArray, swapValues } from "../actions/array";
+import { setCurrentlyChecking } from "../actions/currentlyChecking";
 import { SORTING_SPEED_UPPER_LIMIT } from "../defaults";
 
-const storeDispatch = (localArray) => {
-    store.dispatch(setArray(localArray));
+/**
+ * 
+ * @param {*} storeElementPayload The payload for the store element whose state needs to be updated
+ * @param {*} elementReducer The reducer for that specific change to the element
+ */
+const storeDispatch = (storeElementPayload, elementReducer) => {
+    store.dispatch(elementReducer(storeElementPayload));
 }
 
 // executes after the loop and dispatches after timeDelays
-const timer = (localArray, timeDelayIterator, timeDelay) => {
+const timer = (needToSwap, j, timeDelayIterator, timeDelay) => {
+
     setTimeout(() => {
-        console.log('yes');
-        storeDispatch(localArray);
+
+        const currentIndicesArray = [j, j + 1];
+
+        storeDispatch(currentIndicesArray, setCurrentlyChecking);
+
+        if (needToSwap) {
+            storeDispatch(currentIndicesArray, swapValues);
+        }
+
+        setTimeout(() => {
+            storeDispatch([], setCurrentlyChecking);
+        }, (timeDelayIterator * timeDelay) + (needToSwap ? 1000 : 0));
+
     }, timeDelayIterator * timeDelay);
+
 };
 
 const bubbleSort = () => {
@@ -54,19 +73,29 @@ const bubbleSort = () => {
 
     // bubble sort algorithm 
     for (var i = 0; i < arraySize - 1; i++) {
-        for (var j = 0; j < arraySize - i; j++) {
+        for (var j = 0; j < arraySize - i - 1; j++) {
+
+            let needToSwap = false;
 
             if (localArray[j] > localArray[j + 1]) {
-
-                // swapping jth elem with (j+1)th elem
-                let temp = localArray[j + 1];
-                localArray[j + 1] = localArray[j];
-                localArray[j] = temp;
+                /**
+                 * We make changes to our localArray according to bubbleSort,
+                 * then  setTimeout, which was stacked up, follows those 
+                 * chnanges of swapping
+                 */
+                let temp = localArray[j];
+                localArray[j] = localArray[j + 1];
+                localArray[j + 1] = temp;
+                needToSwap = true;
             }
 
-            // again slicing to make dispatch and make state changes
-            const arr = localArray.slice();
-            timer(arr, timeDelayIterator, timeDelay);
+            /** 
+             * Timer() uses j's value to update currentlyChecking and if needToSwap 
+             * is true then also swaps array using j's value
+             * THIS ALL HAPPENS AFTER THESE LOOPS HAVE EXECUTED
+             */
+            timer(needToSwap, j, timeDelayIterator, timeDelay);
+
             timeDelayIterator++;
 
         }

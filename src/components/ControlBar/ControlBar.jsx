@@ -28,7 +28,7 @@ class ControlBar extends Component {
   }
 
   componentDidMount() {
-    this.resetArray(100)
+    this.resetArray(DEFAULT_ARRAY_SIZE);
   }
 
 

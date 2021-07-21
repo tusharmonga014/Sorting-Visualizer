@@ -13,8 +13,8 @@ const ARRAY_MAX_VALUE = 400;
  * ...................
  * SORTING_SPEED_LOWER_LIMIT is 0 always
  */
-const SORTING_SPEED_UPPER_LIMIT = 100;
-const DEFAULT_SELECTED_SPEED = 100;
+const SORTING_SPEED_UPPER_LIMIT = 800;
+const DEFAULT_SELECTED_SPEED = 600;
 
 /**
  * ............
@@ -24,6 +24,12 @@ const DEFAULT_SELECTED_SPEED = 100;
 const MIN_ARRAY_SIZE = 10;
 const MAX_ARRAY_SIZE = 200;
 const DEFAULT_ARRAY_SIZE = 100;
+
+/**
+ * Default selected sorting algorithm
+ * shown in dropdown algo selector
+ */
+const DEFAULT_SELECTED_ALGORITHM = 'BUBBLE_SORT';
 
 /**
  * .............................
@@ -37,5 +43,6 @@ export {
     DEFAULT_SELECTED_SPEED,
     MIN_ARRAY_SIZE,
     MAX_ARRAY_SIZE,
-    DEFAULT_ARRAY_SIZE
+    DEFAULT_ARRAY_SIZE,
+    DEFAULT_SELECTED_ALGORITHM
 }

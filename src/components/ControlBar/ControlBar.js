@@ -1,6 +1,6 @@
 import ControlBar from "./ControlBar.jsx";
 import { connect } from "react-redux";
-import { setArray } from "../../actions/array";
+import { setArray, swapValues } from "../../actions/array";
 import { setAlgorithm } from "../../actions/algorithm";
 import { setSpeed } from "../../actions/speed/index.js";
 import { ARRAY_MIN_VALUE, ARRAY_MAX_VALUE } from "../../defaults/index.js";

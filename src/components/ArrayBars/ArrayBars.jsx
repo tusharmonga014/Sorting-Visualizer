@@ -22,7 +22,7 @@ class ArrayBars extends Component {
 
     render() {
 
-        const { array } = this.props;
+        const { array, currentlyChecking } = this.props;
 
         const arraySize = array.length;
         const barsDisplayAreaWidth = this.getBarsDisplayAreaWidth(arraySize);
@@ -35,7 +35,7 @@ class ArrayBars extends Component {
             < div className="bars" style={{ width: barsDisplayAreaWidth }}>
                 {
                     array.length > 0 && array.map((bar, idx) => {
-                        const backgroundColor = (idx !== 0 && array[idx] < array[idx - 1]) ? 'blue' : 'blue'
+                        const backgroundColor = (currentlyChecking.includes(idx)) ? 'red' : 'blue';
                         return (
                             <div id={idx} className="bar" style={{ width: barWidth, height: bar, backgroundColor: backgroundColor, marginLeft: (idx !== 0 ? marginBetween : 0) }} key={idx}>
                                 {displayBarHeight ? bar : ''}
