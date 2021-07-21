@@ -26,6 +26,15 @@ const MAX_ARRAY_SIZE = 200;
 const DEFAULT_ARRAY_SIZE = 100;
 
 /**
+ * .............
+ * Colour Scheme
+ * .............
+ */
+const BAR__COLOUR_DEFAULT = 'blue';
+const BAR_COLOUR_WHILE_CHECKING = 'red';
+const BAR_COLOUR_SORTED = 'green';
+
+/**
  * Default selected sorting algorithm
  * shown in dropdown algo selector
  */
@@ -44,5 +53,8 @@ export {
     MIN_ARRAY_SIZE,
     MAX_ARRAY_SIZE,
     DEFAULT_ARRAY_SIZE,
+    BAR__COLOUR_DEFAULT,
+    BAR_COLOUR_WHILE_CHECKING,
+    BAR_COLOUR_SORTED,
     DEFAULT_SELECTED_ALGORITHM
 }

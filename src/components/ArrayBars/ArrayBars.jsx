@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import React, { Component } from "react"
+import { BAR_COLOUR_SORTED, BAR_COLOUR_WHILE_CHECKING, BAR__COLOUR_DEFAULT } from "../../defaults";
 import "./ArrayBars.css";
 
 class ArrayBars extends Component {
@@ -22,7 +23,7 @@ class ArrayBars extends Component {
 
     render() {
 
-        const { array, currentlyChecking } = this.props;
+        const { array, currentlyChecking, sortedArray } = this.props;
 
         const arraySize = array.length;
         const barsDisplayAreaWidth = this.getBarsDisplayAreaWidth(arraySize);
@@ -35,7 +36,8 @@ class ArrayBars extends Component {
             < div className="bars" style={{ width: barsDisplayAreaWidth }}>
                 {
                     array.length > 0 && array.map((bar, idx) => {
-                        const backgroundColor = (currentlyChecking.includes(idx)) ? 'red' : 'blue';
+                        let backgroundColor = currentlyChecking.includes(idx) ? BAR_COLOUR_WHILE_CHECKING : BAR__COLOUR_DEFAULT;
+                        backgroundColor = sortedArray.includes(idx) ? BAR_COLOUR_SORTED : backgroundColor;
                         return (
                             <div id={idx} className="bar" style={{ width: barWidth, height: bar, backgroundColor: backgroundColor, marginLeft: (idx !== 0 ? marginBetween : 0) }} key={idx}>
                                 {displayBarHeight ? bar : ''}

@@ -5,6 +5,9 @@ import { setAlgorithm } from "../../actions/algorithm";
 import { setSpeed } from "../../actions/speed/index.js";
 import { ARRAY_MIN_VALUE, ARRAY_MAX_VALUE } from "../../defaults/index.js";
 import { bubbleSort, mergeSort, quickSort } from "../../algorithms"
+import { setSortedArray } from "../../actions/sortedArray/index.js";
+import { currentlyChecking } from "../../reducers/currenltyCheckingReducer/index.js";
+import { setCurrentlyChecking } from "../../actions/currentlyChecking/index.js";
 
 //returns a random value between low and up limit [both inclusive]
 const getRandomValue = (lowerLimit, upperLimit) => {
@@ -33,6 +36,11 @@ const convertAlgorithmNameToSpecific = (selectedAlgo) => {
     }
 }
 
+const empty_CurrentlyArray_and_SortedArray = (dispatch) => {
+    dispatch(setCurrentlyChecking([]));
+    dispatch(setSortedArray([]));
+}
+
 const mapStateToProps = (state) => {
     const array = state.array;
     const algorithm = state.algorithm;
@@ -45,21 +53,25 @@ const mapDispatchToProps = () => dispatch => ({
     generateArray: (arraySize) => {
         const randomGeneratedArray = generateRandomArray(arraySize);
         dispatch(setArray(randomGeneratedArray));
+        empty_CurrentlyArray_and_SortedArray(dispatch);
     },
 
     //setting the algorithm through dispatch
     changeAlgorithm: (selectedAlgo) => {
+        empty_CurrentlyArray_and_SortedArray(dispatch);
         const specificAlgoName = convertAlgorithmNameToSpecific(selectedAlgo);
         dispatch(setAlgorithm(specificAlgoName));
     },
 
     //changing the sorting display speed of algorithm
     changeSpeed: (selectSpeed) => {
+        empty_CurrentlyArray_and_SortedArray(dispatch);
         dispatch(setSpeed(selectSpeed));
     },
 
     //starts the sorting
     sort: () => {
+        empty_CurrentlyArray_and_SortedArray(dispatch);
         bubbleSort();
     }
 });
