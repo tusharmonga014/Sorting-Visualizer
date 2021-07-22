@@ -31,21 +31,25 @@ class ArrayBars extends Component {
         const displayBarHeight = arraySize < 23 ? true : false;
 
         return (
+            <div>
+                <div className="bars" style={{ width: barsDisplayAreaWidth }}>
+                    {
+                        array.length > 0 && array.map((bar, idx) => {
+                            let backgroundColor = currentlyChecking.includes(idx) ? BAR_COLOUR_WHILE_CHECKING : BAR__COLOUR_DEFAULT;
+                            backgroundColor = idx === pivot ? BAR_COLOUR_PIVOT : backgroundColor;
+                            backgroundColor = sortedArray.includes(idx) ? BAR_COLOUR_SORTED : backgroundColor;
+                            return (
+                                <div id={idx} className="bar" style={{ width: barWidth, height: bar, backgroundColor: backgroundColor, marginLeft: marginBetween }} key={idx}>
+                                    {displayBarHeight ? bar : ''}
+                                </div>
+                            );
+                        })
+                    }
+                </div >
 
-            < div className="bars" style={{ width: barsDisplayAreaWidth }}>
-                {
-                    array.length > 0 && array.map((bar, idx) => {
-                        let backgroundColor = currentlyChecking.includes(idx) ? BAR_COLOUR_WHILE_CHECKING : BAR__COLOUR_DEFAULT;
-                        backgroundColor = idx === pivot ? BAR_COLOUR_PIVOT : backgroundColor;
-                        backgroundColor = sortedArray.includes(idx) ? BAR_COLOUR_SORTED : backgroundColor;
-                        return (
-                            <div id={idx} className="bar" style={{ width: barWidth, height: bar, backgroundColor: backgroundColor, marginLeft: marginBetween }} key={idx}>
-                                {displayBarHeight ? bar : ''}
-                            </div>
-                        );
-                    })
-                }
-            </div >
+                <div className='base-block bg-dark text-center'></div>
+
+            </div>
         )
     }
 }

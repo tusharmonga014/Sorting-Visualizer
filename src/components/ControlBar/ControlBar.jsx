@@ -54,27 +54,48 @@ class ControlBar extends Component {
     const arraySize = array.length;
 
     return (
-      <div className='nav navbar navbar-dark bg-dark text-center'>
+      <div className='nav navbar navbar-dark bg-dark text-center p-3'>
         <div className='navbar navbar-brand col-3 text-center m-0 p-0'>
           <h2>SORTING VISUALIZER</h2>
         </div>
 
         <div className="col-3  text-center">
-          <button className='generate-array-button btn btn-white btn-round m-1 mr-2'
+          <button className='generate-array-button btn btn-white btn-round mr-2'
             onClick={() => { this.resetArray(arraySize) }}>
             Generate New Array
           </button>
 
           <div className="btn-group">
-            <button type="button" id="dropdown-algo-selector" className="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button
+              type="button"
+              id="dropdown-algo-selector"
+              className="btn btn-success dropdown-toggle"
+              data-toggle="dropdown" 
+              aria-haspopup="true"
+              aria-expanded="false">
               Bubble Sort
             </button>
             <div className="dropdown-menu">
-              <button className="dropdown-item" value='BUBBLE_SORT' onClick={this.changeAlgorithm}>Bubble Sort</button>
+            <h1 className="dropdown-header text-large">Select Algorithm</h1>
+              <button
+                className="dropdown-item"
+                value='BUBBLE_SORT'
+                onClick={this.changeAlgorithm}>
+                Bubble Sort
+              </button>
               <div className="dropdown-divider"></div>
-              <button className="dropdown-item" value='MERGE_SORT' onClick={this.changeAlgorithm}>Merge Sort</button>
+              <button className="dropdown-item"
+                value='MERGE_SORT'
+                onClick={this.changeAlgorithm}>
+                Merge Sort
+              </button>
               <div className="dropdown-divider"></div>
-              <button className="dropdown-item" value='QUICK_SORT' onClick={this.changeAlgorithm}>Quick Sort</button>
+              <button
+                className="dropdown-item"
+                value='QUICK_SORT'
+                onClick={this.changeAlgorithm}>
+                Quick Sort
+              </button>
             </div>
           </div>
         </div>
@@ -94,7 +115,6 @@ class ControlBar extends Component {
             defaultValue={DEFAULT_ARRAY_SIZE}
             onChange={this.changeArraySize}
           />
-
           <input
             className='sorting-speed-range-button mt-1'
             type="range"
@@ -107,8 +127,7 @@ class ControlBar extends Component {
 
         <button
           className="btn btn-success mr-4 col-2"
-          onClick={this.startSorting}
-        >
+          onClick={this.startSorting}>
           START SORTING
         </button>
 
