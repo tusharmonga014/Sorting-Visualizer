@@ -9,7 +9,7 @@ body {
 
 .bars {
     align-items: flex-end;
-    bottom: 40px;
+    bottom: 42px;
     display: flex;
     left: 0;
     margin-left: auto;
@@ -25,10 +25,10 @@ body {
     padding-top: 2px;
 }
 
-.base-block{
-    height: 37.5px;
-    width: 100%;
-    display: block;
-    position: absolute;
+.base-block {
     bottom: 0px;
+    display: block;
+    height: 40px;
+    position: absolute;
+    width: 100%;
 }

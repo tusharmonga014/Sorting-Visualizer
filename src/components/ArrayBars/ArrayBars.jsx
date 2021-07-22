@@ -38,8 +38,13 @@ class ArrayBars extends Component {
                             let backgroundColor = currentlyChecking.includes(idx) ? BAR_COLOUR_WHILE_CHECKING : BAR__COLOUR_DEFAULT;
                             backgroundColor = idx === pivot ? BAR_COLOUR_PIVOT : backgroundColor;
                             backgroundColor = sortedArray.includes(idx) ? BAR_COLOUR_SORTED : backgroundColor;
+
                             return (
-                                <div id={idx} className="bar" style={{ width: barWidth, height: bar, backgroundColor: backgroundColor, marginLeft: marginBetween }} key={idx}>
+                                <div
+                                    id={idx}
+                                    key={idx}
+                                    className="bar"
+                                    style={{ width: barWidth, height: bar, backgroundColor: backgroundColor, marginLeft: marginBetween }}>
                                     {displayBarHeight ? bar : ''}
                                 </div>
                             );
