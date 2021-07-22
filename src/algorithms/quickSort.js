@@ -29,7 +29,7 @@ import { addToSortedArray } from "../actions/sortedArray";
  * firstIdx : index for first subarray,
  * secondIdx : index for second subarray
  */
-const Queue = [];
+let Queue = [];
 
 /**
  * It takes an object and a timeDelayIterator as arguments and update the
@@ -53,12 +53,12 @@ const Queue = [];
         /**
          * 
          */
-        storeDispatch()
+        // storeDispatch()
 
         /**
          * Updating array with changed array
          */
-        storeDispatch(array, setArray);
+        // storeDispatch(array, setArray);
 
         /**
          * Removing the marking on indices
@@ -169,7 +169,7 @@ function quickSort() {
         // THIS EXECUTES AFTER ALL THE OTHER setTimeout ABOVE IN LOOP
         if (i === Queue.length - 1) {
             setTimeout(() => {
-                storeDispatch(allIndicesArray, setSortedArray);
+                // storeDispatch(allIndicesArray, setSortedArray);
             }, getTimeDelay() * i);
         }
     }

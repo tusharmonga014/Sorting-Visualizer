@@ -1,4 +1,4 @@
-import { setArray, setValue } from "../actions/array";
+import { setValue } from "../actions/array";
 import { setCurrentlyChecking } from "../actions/currentlyChecking";
 import { setSortedArray } from "../actions/sortedArray";
 import { store } from "../store";
@@ -30,7 +30,7 @@ import { getTimeDelay, storeDispatch } from "./helpers";
  * firstIdx : index for first subarray,
  * secondIdx : index for second subarray
  */
-const Queue = [];
+let Queue = [];
 
 /**
  * It takes an object and a timeDelayIterator as arguments and update the
@@ -42,7 +42,7 @@ const Queue = [];
 function updateArrayAfterTimeDelay(QueueObject, timeDelayIterator) {
     setTimeout(() => {
 
-        const { array, firstIdx, secondIdx } = QueueObject;
+        const { k, value, firstIdx, secondIdx } = QueueObject;
         const indices = [firstIdx, secondIdx];
 
         /**
@@ -51,10 +51,6 @@ function updateArrayAfterTimeDelay(QueueObject, timeDelayIterator) {
          */
         storeDispatch(indices, setCurrentlyChecking);
 
-        /**
-         * Updating array with changed array
-         */
-        storeDispatch(array, setArray);
 
         /**
          * Removing the marking on indices
@@ -62,6 +58,11 @@ function updateArrayAfterTimeDelay(QueueObject, timeDelayIterator) {
         setTimeout(() => {
             storeDispatch([], setCurrentlyChecking);
         }, getTimeDelay() * (timeDelayIterator - 1));
+
+        /**
+         * Updating value at k index in array
+         */
+        store.dispatch(setValue(k, value));
 
     }, getTimeDelay() * timeDelayIterator);
 }
@@ -127,17 +128,24 @@ function merge(localArray, leftIdx, midIdx, rightIdx) {
     while (i < n1 && j < n2) {
         if (leftLocalArray[i] <= rightLocalArray[j]) {
             localArray[k] = leftLocalArray[i];
+            Queue.push({
+                k: k,
+                value: leftLocalArray[i],
+                firstIdx: leftIdx + i,
+                secondIdx: midIdx + 1 + j
+            });
             i++;
         }
         else {
             localArray[k] = rightLocalArray[j];
+            Queue.push({
+                k: k,
+                value: rightLocalArray[j],
+                firstIdx: leftIdx + i,
+                secondIdx: midIdx + 1 + j
+            });
             j++;
         }
-        Queue.push({
-            array: localArray.slice(),
-            firstIdx: leftIdx + i,
-            secondIdx: midIdx + 1 + j
-        });
 
         k++;
     }
@@ -157,8 +165,9 @@ function merge(localArray, leftIdx, midIdx, rightIdx) {
         localArray[k] = leftLocalArray[i];
         // IMPORTANT
         Queue.push({
-            array: localArray.slice(),
-            firstIdx: -1,
+            k: k,
+            value: leftLocalArray[i],
+            firstIdx: leftIdx + i,
             secondIdx: -1
         });
         i++;
@@ -171,9 +180,10 @@ function merge(localArray, leftIdx, midIdx, rightIdx) {
         localArray[k] = rightLocalArray[j];
         // IMPORTANT 
         Queue.push({
-            array: localArray.slice(),
+            k: k,
+            value: rightLocalArray[j],
             firstIdx: -1,
-            secondIdx: -1
+            secondIdx: midIdx + 1 + j
         });
         j++;
         k++;
@@ -245,7 +255,7 @@ function mergeSort() {
         if (i === Queue.length - 1) {
             setTimeout(() => {
                 storeDispatch(allIndicesArray, setSortedArray);
-            }, getTimeDelay() * i);
+            }, getTimeDelay() * (i + 2));
         }
     }
 }
