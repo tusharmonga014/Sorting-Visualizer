@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { BAR_COLOUR_SORTED, BAR_COLOUR_WHILE_CHECKING, BAR__COLOUR_DEFAULT, MARGIN_BETWEEN_BARS, SCREEN_PERCENTAGE_TO_OCCUPY } from "../../defaults";
+import { BAR_COLOUR_PIVOT, BAR_COLOUR_SORTED, BAR_COLOUR_WHILE_CHECKING, BAR__COLOUR_DEFAULT, MARGIN_BETWEEN_BARS, SCREEN_PERCENTAGE_TO_OCCUPY } from "../../defaults";
 import "./ArrayBars.css";
 
 class ArrayBars extends Component {
@@ -22,7 +22,7 @@ class ArrayBars extends Component {
 
     render() {
 
-        const { array, currentlyChecking, sortedArray } = this.props;
+        const { array, currentlyChecking, pivot, sortedArray } = this.props;
 
         const arraySize = array.length;
         const barsDisplayAreaWidth = this.getBarsDisplayAreaWidth(arraySize);
@@ -36,6 +36,7 @@ class ArrayBars extends Component {
                 {
                     array.length > 0 && array.map((bar, idx) => {
                         let backgroundColor = currentlyChecking.includes(idx) ? BAR_COLOUR_WHILE_CHECKING : BAR__COLOUR_DEFAULT;
+                        backgroundColor = idx === pivot ? BAR_COLOUR_PIVOT : backgroundColor;
                         backgroundColor = sortedArray.includes(idx) ? BAR_COLOUR_SORTED : backgroundColor;
                         return (
                             <div id={idx} className="bar" style={{ width: barWidth, height: bar, backgroundColor: backgroundColor, marginLeft: marginBetween }} key={idx}>

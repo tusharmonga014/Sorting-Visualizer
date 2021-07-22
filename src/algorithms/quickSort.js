@@ -1,7 +1,9 @@
 import { store } from "../store";
 import { storeDispatch, getTimeDelay } from "./helpers";
 import { setCurrentlyChecking } from "../actions/currentlyChecking";
-import { addToSortedArray } from "../actions/sortedArray";
+import { setSortedArray } from "../actions/sortedArray";
+import { swapValues } from "../actions/array";
+import { setPivot } from "../actions/pivot";
 
 /**
  * 
@@ -25,9 +27,9 @@ import { addToSortedArray } from "../actions/sortedArray";
  * 
  * This keeps a track of changes in the array an the indices
  * It stores an object for each change,
- * array : changed array,
  * firstIdx : index for first subarray,
  * secondIdx : index for second subarray
+ * pivot : currently selected pivot point
  */
 let Queue = [];
 
@@ -38,10 +40,10 @@ let Queue = [];
  * @param {*} timeDelayIterator An increasing value which prevents 
  * running all setTimeouts at once
  */
- function updateArrayAfterTimeDelay(QueueObject, timeDelayIterator) {
+function updateArrayAfterTimeDelay(QueueObject, timeDelayIterator) {
     setTimeout(() => {
 
-        const { array, firstIdx, secondIdx, pivot } = QueueObject;
+        const { firstIdx, secondIdx, pivot } = QueueObject;
         const indices = [firstIdx, secondIdx];
 
         /**
@@ -49,16 +51,7 @@ let Queue = [];
          * which are being compared currently
          */
         storeDispatch(indices, setCurrentlyChecking);
-
-        /**
-         * 
-         */
-        // storeDispatch()
-
-        /**
-         * Updating array with changed array
-         */
-        // storeDispatch(array, setArray);
+        storeDispatch(pivot, setPivot);
 
         /**
          * Removing the marking on indices
@@ -66,6 +59,11 @@ let Queue = [];
         setTimeout(() => {
             storeDispatch([], setCurrentlyChecking);
         }, getTimeDelay() * (timeDelayIterator - 1));
+        
+        /**
+         * Updating array with changed array
+         */
+        storeDispatch(indices, swapValues);
 
     }, getTimeDelay() * timeDelayIterator);
 }
@@ -95,34 +93,37 @@ function partition(localArray, startIdx, endIdx) {
             [localArray[idx], localArray[pivotIdx]] = [localArray[pivotIdx], localArray[idx]];
             // Moving to next element
             pivotIdx++;
-            Queue.add({
-                array : localArray,
+            Queue.push({
                 firstIdx: idx,
-                secondIdx: idx,
-                pivot: pivotIdx
+                secondIdx: pivotIdx - 1,
+                pivot: endIdx
             })
-
         }
     }
 
     // Putting the pivot value in the middle
     [localArray[pivotIdx], localArray[endIdx]] = [localArray[endIdx], localArray[pivotIdx]]
+    Queue.push({
+        firstIdx: pivotIdx,
+        secondIdx: endIdx,
+        pivot: -1
+    })
 
     return pivotIdx;
 };
 
-function quickSortRecursive(arr, start, end) {
+function quickSortRecursive(localArray, startIdx, endIdx) {
     // Base case or terminating case
-    if (start >= end) {
+    if (startIdx >= endIdx) {
         return;
     }
 
     // Returns pivotIndex
-    let index = partition(arr, start, end);
+    const pivotIdx = partition(localArray, startIdx, endIdx);
 
     // Recursively apply the same logic to the left and right subarrays
-    quickSortRecursive(arr, start, index - 1);
-    quickSortRecursive(arr, index + 1, end);
+    quickSortRecursive(localArray, startIdx, pivotIdx - 1);
+    quickSortRecursive(localArray, pivotIdx + 1, endIdx);
 }
 
 function quickSort() {
@@ -151,7 +152,7 @@ function quickSort() {
     for (var i = 0; i < Queue.length; i++) {
         /**
         * setTimeout() function inside a loop stacks up and
-        * executes only after the loopand all the iterations 
+        * executes only after the loop and all the iterations 
         * start together at same time
         * 
         * To prevent simultaneous executions of setTimeouts,
@@ -169,8 +170,8 @@ function quickSort() {
         // THIS EXECUTES AFTER ALL THE OTHER setTimeout ABOVE IN LOOP
         if (i === Queue.length - 1) {
             setTimeout(() => {
-                // storeDispatch(allIndicesArray, setSortedArray);
-            }, getTimeDelay() * i);
+                storeDispatch(allIndicesArray, setSortedArray);
+            }, getTimeDelay() * (i + 2));
         }
     }
 }

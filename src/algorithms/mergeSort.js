@@ -26,7 +26,8 @@ import { getTimeDelay, storeDispatch } from "./helpers";
  * 
  * This keeps a track of changes in the array an the indices
  * It stores an object for each change,
- * array : changed array,
+ * k : index which needs to be updated
+ * value : value with which array[k] will be updated with
  * firstIdx : index for first subarray,
  * secondIdx : index for second subarray
  */
@@ -51,7 +52,6 @@ function updateArrayAfterTimeDelay(QueueObject, timeDelayIterator) {
          */
         storeDispatch(indices, setCurrentlyChecking);
 
-
         /**
          * Removing the marking on indices
          */
@@ -62,7 +62,7 @@ function updateArrayAfterTimeDelay(QueueObject, timeDelayIterator) {
         /**
          * Updating value at k index in array
          */
-        store.dispatch(setValue(k, value));
+        storeDispatch({ index: k, value: value }, setValue);
 
     }, getTimeDelay() * timeDelayIterator);
 }
@@ -82,9 +82,9 @@ function updateArrayAfterTimeDelay(QueueObject, timeDelayIterator) {
  */
 
 /**
- * Merges two subarrays of array[].
- * First subarray is array[l..m]
- * Second subarray is array[m+1..r]
+ * Merges two subarrays of localArray[].
+ * First subarray is localArray[l..m]
+ * Second subarray is localArray[m+1..r]
  * @param {*} localArray Original Array 
  * @param {*} leftIdx Starting index for first subarray
  * @param {*} midxIdx Ending Index (inclusive) for first subarray
@@ -236,7 +236,7 @@ function mergeSort() {
     for (var i = 0; i < Queue.length; i++) {
         /**
         * setTimeout() function inside a loop stacks up and
-        * executes only after the loopand all the iterations 
+        * executes only after the loop and all the iterations 
         * start together at same time
         * 
         * To prevent simultaneous executions of setTimeouts,

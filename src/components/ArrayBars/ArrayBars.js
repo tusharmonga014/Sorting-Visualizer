@@ -5,8 +5,9 @@ const mapStateToProps = (state) => {
     const array = state.array;
     const algorithm = state.algorithm;
     const currentlyChecking = state.currentlyChecking;
+    const pivot = state.pivot;
     const sortedArray = state.sortedArray;
-    return { array, algorithm, currentlyChecking, sortedArray };
+    return { array, algorithm, currentlyChecking, pivot, sortedArray };
 }
 
 const mapDispatchToProps = () => dispatch => ({

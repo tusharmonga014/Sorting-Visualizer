@@ -1,7 +1,7 @@
 /**
  * Array's lowest value
  */
-const ARRAY_MIN_VALUE = 40;
+const ARRAY_MIN_VALUE = 10;
 /**
  * Array's largest value
  * ARRAY_MAX_VALUE > 500 will overlap with Control-Bar
@@ -38,6 +38,10 @@ const BAR_COLOUR_WHILE_CHECKING = 'blue';
  * Bar colour when it has been sorted
  */
 const BAR_COLOUR_SORTED = 'purple';
+/**
+ * Bar colour when it is pivot
+ */
+const BAR_COLOUR_PIVOT = 'rgb(102, 255, 51)';
 
 
 /**
@@ -83,6 +87,7 @@ export {
     BAR__COLOUR_DEFAULT,
     BAR_COLOUR_WHILE_CHECKING,
     BAR_COLOUR_SORTED,
+    BAR_COLOUR_PIVOT,
     DEFAULT_SELECTED_ALGORITHM,
     MARGIN_BETWEEN_BARS,
     SCREEN_PERCENTAGE_TO_OCCUPY

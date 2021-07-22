@@ -3,6 +3,7 @@ import { algorithm } from "./algorithmRedcuer";
 import { array } from "./arrayReducer";
 import { currentlyChecking } from "./currenltyCheckingReducer";
 import { speed } from "./speedReducer";
+import { pivot } from "./pivotReducer";
 import { sortedArray } from "./sortedArrayReducer";
 
 const rootReducer = combineReducers({
@@ -10,6 +11,7 @@ const rootReducer = combineReducers({
     algorithm,
     speed,
     currentlyChecking,
+    pivot,
     sortedArray
 });
 
