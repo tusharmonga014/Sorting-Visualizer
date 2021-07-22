@@ -114,8 +114,6 @@ class ControlBar extends Component {
           START SORTING
         </button>
 
-        <button onClick={() => { store.dispatch(setValue(0, 100)) }}>Tester Button Does Random Funckin Stuff!</button>
-
       </div>
     )
   }

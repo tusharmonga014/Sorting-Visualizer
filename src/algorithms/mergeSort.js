@@ -31,9 +31,11 @@ import { getTimeDelay, storeDispatch } from "./helpers";
 let Queue = [];
 
 /**
- * 
- * @param {*} storeElementPayload The payload for the store element whose state needs to be updated
- * @param {*} storeElementReducer The reducer for that specific change to the element
+ * It takes an object and a timeDelayIterator as arguments and update the
+ * store's state Array after delayed time
+ * @param {*} QueueObject The Object which contains one specific change
+ * @param {*} timeDelayIterator An increasing value which prevents 
+ * running all setTimeouts at once
  */
 function updateArrayAfterTimeDelay(QueueObject, timeDelayIterator) {
     setTimeout(() => {

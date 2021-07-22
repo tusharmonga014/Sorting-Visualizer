@@ -29,11 +29,11 @@ const DEFAULT_ARRAY_SIZE = 100;
  * Bar colour when its neither sorted 
  * nor in the process of being sorted
  */
-const BAR__COLOUR_DEFAULT = 'blue';
+const BAR__COLOUR_DEFAULT = 'rgb(0, 204, 255)';
 /**
  * Bar colour when its in the process for sorting
  */
-const BAR_COLOUR_WHILE_CHECKING = 'green';
+const BAR_COLOUR_WHILE_CHECKING = 'blue';
 /**
  * Bar colour when it has been sorted
  */
