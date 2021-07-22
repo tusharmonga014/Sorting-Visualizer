@@ -4,8 +4,16 @@ import { setCurrentlyChecking } from "../actions/currentlyChecking";
 import { addToSortedArray } from "../actions/sortedArray";
 import { getTimeDelay, storeDispatch } from "./helpers";
 
-// executes after the loop and dispatches after timeDelays
-function timer(i, j, arraySize, needToSwap, addToSorted, timeDelayIterator) {
+/**
+ * Executes and updates the array with dispatches after timeDelays
+ * @param {number} i Main iterator in bubble sort
+ * @param {number} j Checking iterator in bubble sort
+ * @param {number} arraySize Length of the array
+ * @param {boolean} needToSwap Represents whether value at j index was swapped with (j + 1)'s value
+ * @param {boolean} addToSorted Shows whether its the last j value which has been sorted
+ * @param {number} timeDelayIterator An increasing value which prevents running all setTimeouts at once
+ */
+function updateArrayAfterTimeDelay(i, j, arraySize, needToSwap, addToSorted, timeDelayIterator) {
 
     setTimeout(() => {
 
@@ -19,7 +27,7 @@ function timer(i, j, arraySize, needToSwap, addToSorted, timeDelayIterator) {
 
         setTimeout(() => {
             storeDispatch([], setCurrentlyChecking);
-        }, timeDelayIterator * getTimeDelay());
+        }, getTimeDelay() * (timeDelayIterator - 1));
 
         if (addToSorted) {
             storeDispatch(j + 1, addToSortedArray);
@@ -33,7 +41,7 @@ function timer(i, j, arraySize, needToSwap, addToSorted, timeDelayIterator) {
             }
         }
 
-    }, timeDelayIterator * getTimeDelay());
+    }, getTimeDelay() * timeDelayIterator);
 
 };
 
@@ -51,19 +59,18 @@ function bubbleSort() {
      * start together at same time
      * 
      * To prevent simultaneous executions of setTimeouts,
-     * we pass and iterator with increasing values.
+     * we pass an iterator with increasing values.
      */
     let timeDelayIterator = 0;
 
 
     /**
+     * Its a copy of store's state Array.
      * Here .slice() is really important as
-     * only then react will be able to spot a difference 
-     * in the originally stored array's state and 
-     * newly passed array's state
-     * 
+     * it gives us a deep copy else whatever changes
+     * we make in the loop, they will get updated immediately
      */
-    let localArray = state.array.slice();
+    const localArray = state.array.slice();
     const arraySize = state.array.length;
 
     // bubble sort algorithm 
@@ -94,9 +101,9 @@ function bubbleSort() {
              * needToSwap is true then also swaps array using j's value
              * THIS ALL HAPPENS AFTER THESE LOOPS HAVE EXECUTED
              */
-            timer(i, j, arraySize, needToSwap, addToSorted, timeDelayIterator);
+            updateArrayAfterTimeDelay(i, j, arraySize, needToSwap, addToSorted, timeDelayIterator);
 
-            timeDelayIterator += 1;
+            timeDelayIterator += 2;
 
         }
     }

@@ -22,13 +22,15 @@ import { getTimeDelay, storeDispatch } from "./helpers";
  */
 
 /**
+ * -- We didn't need a queue in Bubble Sort because it wasn't recursive --
+ * 
  * This keeps a track of changes in the array an the indices
  * It stores an object for each change,
  * array : changed array,
  * firstIdx : index for first subarray,
  * secondIdx : index for second subarray
  */
-let Queue = [];
+const Queue = [];
 
 /**
  * It takes an object and a timeDelayIterator as arguments and update the
@@ -59,7 +61,7 @@ function updateArrayAfterTimeDelay(QueueObject, timeDelayIterator) {
          */
         setTimeout(() => {
             storeDispatch([], setCurrentlyChecking);
-        }, getTimeDelay() * timeDelayIterator);
+        }, getTimeDelay() * (timeDelayIterator - 1));
 
     }, getTimeDelay() * timeDelayIterator);
 }
@@ -185,13 +187,13 @@ function merge(localArray, leftIdx, midIdx, rightIdx) {
  * @param {*} leftIdx Starting index of subarray
  * @param {*} rightIdx Ending Index (inclusive) of subarray 
  */
-function merge_Sort(localArray, leftIdx, rightIdx) {
+function mergeSortRecursive(localArray, leftIdx, rightIdx) {
     if (leftIdx >= rightIdx) {
         return;//returns recursively
     }
     var midIdx = leftIdx + parseInt((rightIdx - leftIdx) / 2);
-    merge_Sort(localArray, leftIdx, midIdx);
-    merge_Sort(localArray, midIdx + 1, rightIdx);
+    mergeSortRecursive(localArray, leftIdx, midIdx);
+    mergeSortRecursive(localArray, midIdx + 1, rightIdx);
     merge(localArray, leftIdx, midIdx, rightIdx);
 }
 
@@ -200,14 +202,22 @@ function merge_Sort(localArray, leftIdx, rightIdx) {
  */
 function mergeSort() {
 
+    // gets current state object
     const state = store.getState();
+
+    /**
+     * Its a copy of store's state Array.
+     * Here .slice() is really important as
+     * it gives us a deep copy else whatever changes
+     * we make in the loop, they will get updated immediately
+     */
     const localArray = state.array.slice();
 
     // So that it clears prevoius memory.. as it is a global variable maintaining memory across files
     Queue = [];
 
     // We perform the merge sort on a copy of store's state Array
-    merge_Sort(localArray, 0, state.array.length - 1);
+    mergeSortRecursive(localArray, 0, state.array.length - 1);
 
     // Stores all indices of the array which will be used for filling sortedArray
     const allIndicesArray = [];
@@ -220,10 +230,10 @@ function mergeSort() {
         * start together at same time
         * 
         * To prevent simultaneous executions of setTimeouts,
-        * we pass and iterator with increasing values.
+        * we pass an iterator with increasing values.
         */
         //i is passed as timeDealyIterator
-        updateArrayAfterTimeDelay(Queue[i], i);
+        updateArrayAfterTimeDelay(Queue[i], i + 2);
 
         /**
          * On last iteration, adding another setTimeout()

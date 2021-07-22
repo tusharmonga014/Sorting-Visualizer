@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import { setValue } from "../../actions/array";
 import { DEFAULT_ARRAY_SIZE, DEFAULT_SELECTED_SPEED, MAX_ARRAY_SIZE, MIN_ARRAY_SIZE, SORTING_SPEED_UPPER_LIMIT } from "../../defaults";
-import { store } from "../../store";
 import "./ControlBar.css";
 
 class ControlBar extends Component {
