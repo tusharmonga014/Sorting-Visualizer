@@ -55,12 +55,12 @@ class ControlBar extends Component {
 
     return (
       <div className='nav navbar navbar-dark bg-dark text-center p-3'>
-        <div className='navbar navbar-brand col-3 text-center m-0 p-0'>
+        <div className='navbar navbar-brand col-sm-12 col-md-6 col-lg-3 text-center m-0 p-0'>
           <h2>SORTING VISUALIZER</h2>
         </div>
 
-        <div className="col-3  text-center">
-          <button className='generate-array-button btn btn-white btn-round mr-2'
+        <div className="col-sm-12 col-md-6 col-lg-3  text-center">
+          <button className='generate-array-button btn btn-white btn-round mt-1 mb-1 mr-2'
             onClick={() => { this.resetArray(arraySize) }}>
             Generate New Array
           </button>
@@ -70,13 +70,13 @@ class ControlBar extends Component {
               type="button"
               id="dropdown-algo-selector"
               className="btn btn-success dropdown-toggle"
-              data-toggle="dropdown" 
+              data-toggle="dropdown"
               aria-haspopup="true"
               aria-expanded="false">
               Bubble Sort
             </button>
             <div className="dropdown-menu">
-            <h1 className="dropdown-header text-large">Select Algorithm</h1>
+              <h1 className="dropdown-header text-large">Select Algorithm</h1>
               <button
                 className="dropdown-item"
                 value='BUBBLE_SORT'
@@ -126,7 +126,7 @@ class ControlBar extends Component {
         </div>
 
         <button
-          className="btn btn-success mr-4 col-2"
+          className="btn btn-success mr-4 col-sm-12 col-md-12 col-lg-2"
           onClick={this.startSorting}>
           START SORTING
         </button>
