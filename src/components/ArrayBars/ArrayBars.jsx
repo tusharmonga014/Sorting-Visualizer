@@ -20,6 +20,28 @@ class ArrayBars extends Component {
         return barWidth;
     }
 
+    showBarHeight = (event) => {
+        const barId = event.target.id;
+        const barIdForHeightDisplay = 'bar' + barId;
+
+        const bar = document.getElementById(barId);
+        const barHeightDisplayBox = document.getElementById(barIdForHeightDisplay);
+
+        bar.style.opacity = 0.5;
+        barHeightDisplayBox.removeAttribute('hidden');
+    }
+
+    hideBarHeight = (event) => {
+        const barId = event.target.id;
+        const barIdForHeightDisplay = 'bar' + barId;
+
+        const bar = document.getElementById(barId);
+        const barHeightDisplayBox = document.getElementById(barIdForHeightDisplay);
+
+        bar.style.opacity = 1;
+        barHeightDisplayBox.setAttribute('hidden', true);
+    }
+
     render() {
 
         const { array, currentlyChecking, pivot, sortedArray } = this.props;
@@ -38,14 +60,29 @@ class ArrayBars extends Component {
                             let backgroundColor = currentlyChecking.includes(idx) ? BAR_COLOUR_WHILE_CHECKING : BAR__COLOUR_DEFAULT;
                             backgroundColor = idx === pivot ? BAR_COLOUR_PIVOT : backgroundColor;
                             backgroundColor = sortedArray.includes(idx) ? BAR_COLOUR_SORTED : backgroundColor;
+                            let barIdForHeightDisplay = 'bar' + idx;
 
                             return (
-                                <div
-                                    id={idx}
-                                    key={idx}
-                                    className="bar"
-                                    style={{ width: barWidth, height: bar, backgroundColor: backgroundColor, marginLeft: marginBetween }}>
-                                    {displayBarHeight ? bar : ''}
+                                <div key={idx}>
+
+                                    {/* bar height display box */}
+                                    <div
+                                        id={barIdForHeightDisplay}
+                                        className="bar-height-display"
+                                        hidden>
+                                        {bar}
+                                    </div>
+
+                                    {/* bar */}
+                                    <div
+                                        id={idx}
+                                        className="bar"
+                                        style={{ width: barWidth, height: bar, backgroundColor: backgroundColor, marginLeft: marginBetween }}
+                                        onMouseOver={this.showBarHeight}
+                                        onMouseLeave={this.hideBarHeight}>
+                                        {displayBarHeight ? bar : ''}
+                                    </div>
+
                                 </div>
                             );
                         })
@@ -54,7 +91,7 @@ class ArrayBars extends Component {
 
                 <div className='base-block bg-dark text-center'></div>
 
-            </div>
+            </div >
         )
     }
 }

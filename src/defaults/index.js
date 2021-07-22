@@ -6,7 +6,7 @@ const ARRAY_MIN_VALUE = 10;
  * Array's largest value
  * ARRAY_MAX_VALUE > 500 will overlap with Control-Bar
  */
-const ARRAY_MAX_VALUE = 450;
+const ARRAY_MAX_VALUE = 425;
 
 /**
  * Sorting speed range
