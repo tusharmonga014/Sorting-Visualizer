@@ -30,6 +30,7 @@ const DEFAULT_ARRAY_SIZE = 100;
  * nor in the process of being sorted
  */
 const BAR__COLOUR_DEFAULT = 'rgb(0, 204, 255)';
+// const BAR__COLOUR_DEFAULT = 'rgb(0, 255, 145)';
 /**
  * Bar colour when its in the process for sorting
  */
@@ -48,7 +49,7 @@ const BAR_COLOUR_PIVOT = 'rgb(102, 255, 51)';
  * Default selected sorting algorithm
  * shown in dropdown algo selector
  */
-const DEFAULT_SELECTED_ALGORITHM = 'BUBBLE_SORT';
+const DEFAULT_SELECTED_ALGORITHM = 'MERGE_SORT';
 
 /**
  * tells margin between bars
