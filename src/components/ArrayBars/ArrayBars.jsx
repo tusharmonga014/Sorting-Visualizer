@@ -70,18 +70,35 @@ class ArrayBars extends Component {
     }
 
     /**
+     * Enables the control bar's input-label-texts
+     */
+    enableInputs = () => {
+        const buttonsToBeEnabled = document.getElementsByClassName('input-disable-when-running');
+        for (let buttonDisablingIterator = 0; buttonDisablingIterator < buttonsToBeEnabled.length; buttonDisablingIterator++) {
+            buttonsToBeEnabled[buttonDisablingIterator].removeAttribute('disabled');
+        }
+    }
+
+    /**
+     * Enables the control bar's input-label-texts
+     */
+    enableTexts = () => {
+        const textsToBeDisabled = document.getElementsByClassName('text-disable-when-running');
+        for (let textDisablingIterator = 0; textDisablingIterator < textsToBeDisabled.length; textDisablingIterator++) {
+            textsToBeDisabled[textDisablingIterator].classList.remove('text-muted');
+            textsToBeDisabled[textDisablingIterator].classList.add('text-white');
+        }
+    }
+
+    /**
      * Enables the control-bar buttons which were 
      * disabled when sorting started
      */
-    enableButtonsWhenArrayIsSorted = () => {
+    enableControlbarFeaturesWhenArrayIsSorted = () => {
         const { array, sortedArray } = this.props;
-
         if (array.length === sortedArray.length) {
-            const buttonsToBeEnabled = document.getElementsByClassName('disable-when-running');
-            
-            for (let buttonIterator = 0; buttonIterator < buttonsToBeEnabled.length; buttonIterator++) {
-                buttonsToBeEnabled[buttonIterator].removeAttribute('disabled');
-            }
+            this.enableInputs();
+            this.enableTexts();
         }
     }
 
@@ -104,7 +121,7 @@ class ArrayBars extends Component {
                             backgroundColor = idx === pivot ? BAR_COLOUR_PIVOT : backgroundColor;
                             backgroundColor = sortedArray.includes(idx) ? BAR_COLOUR_SORTED : backgroundColor;
                             let barIdForHeightDisplay = 'bar' + idx;
-                            this.enableButtonsWhenArrayIsSorted();
+                            this.enableControlbarFeaturesWhenArrayIsSorted();
 
                             return (
                                 <div key={idx}>
