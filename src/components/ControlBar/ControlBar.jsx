@@ -85,16 +85,16 @@ class ControlBar extends Component {
 
 
   render() {
-    const { array, runningStatus } = this.props;
+    const { array } = this.props;
     const arraySize = array.length;
 
     return (
-      <div className='nav navbar navbar-dark bg-dark text-center p-3'>
+      <div className='nav navbar navbar-dark bg-dark text-center p-2'>
         <div className='navbar navbar-brand col-sm-12 col-md-6 col-lg-4 text-center m-0 p-0'>
           <h2>SORTING VISUALIZER</h2>
         </div>
 
-        <div className="col-sm-12 col-md-6 col-lg-3 text-center m-0 p-0 array-algo-buttons">
+        <div className="col-sm-12 col-md-6 col-lg-3 text-justify-end m-0 p-0 array-algo-buttons">
           <button className='generate-array-button btn btn-white btn-round mt-1 mb-1 mr-2 input-disable-when-running'
             onClick={() => { this.resetArray(arraySize) }}>
             Generate New Array
@@ -143,7 +143,7 @@ class ControlBar extends Component {
           </div>
         </div>
 
-        <div className='col-md-12 col-lg-3 row slider-controls'>
+        <div className='col-md-12 col-lg-3 row slider-controls text-justify-end'>
           <div className='text-white text-center text-disable-when-running slider-controls col-sm-3 col-md-6 col-lg-6 mt-1 mb-1'>
             Array Size :
           </div>
@@ -168,9 +168,9 @@ class ControlBar extends Component {
           />
         </div>
 
-        <div className="col-sm-12 col-md-12 col-lg-2 text-center">
+        <div className="col-sm-12 col-md-12 col-lg-2 text-center mt-1 mb-1">
           <button
-            className="btn btn-success"
+            className="btn btn-success btn-sort input-disable-when-running"
             onClick={this.startSorting}>
             START SORTING
           </button>

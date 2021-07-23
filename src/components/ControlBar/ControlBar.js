@@ -46,8 +46,7 @@ const empty_CurrentlyArray_and_SortedArray = (dispatch) => {
 const mapStateToProps = (state) => {
     const array = state.array;
     const algorithm = state.algorithm;
-    const runningStatus = state.runningStatus;
-    return { array, algorithm, runningStatus }
+    return { array, algorithm };
 }
 
 const mapDispatchToProps = () => dispatch => ({
@@ -86,10 +85,6 @@ const mapDispatchToProps = () => dispatch => ({
     startSorting: () => {
         empty_CurrentlyArray_and_SortedArray(dispatch);
         sort();
-    },
-
-    stopSorting: () => {
-        // window.clearTimeout()
     }
 });
 

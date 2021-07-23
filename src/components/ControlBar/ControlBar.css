@@ -15,14 +15,17 @@
 
 /* media-queries */
 
-@media only screen and (max-width: 600px) {
-    body, .btn {
-        font-size: 2vh;
-    }
-}
-
 @media only screen and (max-width: 576px) {
     .slider-range, .text-disable-when-running {
         max-width: 50%;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    body, .btn {
+        font-size: 1.5vh;
+    }
+    .btn-sort {
+        width: 100%;
     }
 }

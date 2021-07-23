@@ -23,7 +23,7 @@ const MIN_ARRAY_SIZE = 10;
  * Maximum array length
  */
 const MAX_ARRAY_SIZE = window.screen.width <= 600 ? 100 : 200;
-const DEFAULT_ARRAY_SIZE = MAX_ARRAY_SIZE / 2;
+const DEFAULT_ARRAY_SIZE = MAX_ARRAY_SIZE / 1.5;
 
 /**
  * Bar colour when its neither sorted 
@@ -72,8 +72,8 @@ const MARGIN_BETWEEN_BARS = (arraySize) => {
  */
 const SCREEN_PERCENTAGE_TO_OCCUPY = (arraySize) => {
     return window.screen.width <= 600 ? 0.80
-            : arraySize <= 16? 0.50
-                : 0.66;
+        : arraySize <= 16 ? 0.50
+            : 0.66;
 }
 
 /**
