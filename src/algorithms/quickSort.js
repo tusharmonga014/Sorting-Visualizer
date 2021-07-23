@@ -10,8 +10,7 @@ import { setPivot } from "../actions/pivot";
  * **********************************************************
  *
  * We perform the quick sort on a copy of store's state Array
- * and keep a track of changes in array and the indices which 
- * were compared while merging two subarrays
+ * and keep a track of changes in array and the pivot points
  * 
  * **********************************************************
  * 
