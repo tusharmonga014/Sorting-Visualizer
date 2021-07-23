@@ -26,7 +26,6 @@ body {
     border-style: solid;
     padding: 0 3px;
     position: absolute;
-    z-index: 1;
 }
 
 .bar {

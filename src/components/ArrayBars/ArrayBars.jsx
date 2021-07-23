@@ -21,25 +21,52 @@ class ArrayBars extends Component {
     }
 
     showBarHeight = (event) => {
+        /**
+         * Obataining bar and its height display 
+         * box id from the event
+         */
         const barId = event.target.id;
         const barIdForHeightDisplay = 'bar' + barId;
 
+        /**
+         * Getting the HTML element through their ids
+         */
         const bar = document.getElementById(barId);
         const barHeightDisplayBox = document.getElementById(barIdForHeightDisplay);
 
+        /**
+         * Opacity becomes 0.5 when mouse enters the bar,
+         * Height Display Box becomes visible,
+         * Z-index of box is set to 1 to bring it forward than bar
+         */
         bar.style.opacity = 0.5;
         barHeightDisplayBox.removeAttribute('hidden');
+        barHeightDisplayBox.style.zIndex = 1;
     }
 
     hideBarHeight = (event) => {
+        /**
+         * Obataining bar and its height display 
+         * box id from the event
+         */
         const barId = event.target.id;
         const barIdForHeightDisplay = 'bar' + barId;
 
+        /**
+         * Getting the HTML element through their ids
+         */
         const bar = document.getElementById(barId);
         const barHeightDisplayBox = document.getElementById(barIdForHeightDisplay);
 
+        /**
+         * Opacity becomes normal when mouse leaves the bar,
+         * Height Display Box again becomes hidden,
+         * Z-index of box is again set to 0 to prevent its area
+         * from stopping mouse over effect for its bar
+         */
         bar.style.opacity = 1;
         barHeightDisplayBox.setAttribute('hidden', true);
+        barHeightDisplayBox.style.zIndex = 0;
     }
 
     render() {
