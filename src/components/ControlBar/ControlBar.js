@@ -11,7 +11,7 @@ import { setCurrentlyChecking } from "../../actions/currentlyChecking/index.js";
 /**
  * Return a random value in specified range
  * @param {*} lowerLimit Least possible random number
- * @param {*} upperLimit Larget possible random number
+ * @param {*} upperLimit Maximum possible random number
  * @returns A random number between lowerLimit and UpperLimit (both inclusive)
  */
 const getRandomValue = (lowerLimit, upperLimit) => {

@@ -1,6 +1,7 @@
 import bubbleSort from "./bubbleSort";
 import mergeSort from "./mergeSort";
 import quickSort from "./quickSort";
+import heapSort from "./heapSort";
 import { store } from "../store";
 
 export default function sort() {
@@ -10,7 +11,7 @@ export default function sort() {
     const algorithm = state.algorithm;
 
     switch (algorithm) {
-        
+
         case 'BUBBLE_SORT': {
             bubbleSort();
             break;
@@ -21,6 +22,10 @@ export default function sort() {
         }
         case 'QUICK_SORT': {
             quickSort();
+            break;
+        }
+        case 'HEAP_SORT': {
+            heapSort();
             break;
         }
         default: {

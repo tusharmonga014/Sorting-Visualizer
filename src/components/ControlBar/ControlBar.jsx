@@ -22,6 +22,7 @@ class ControlBar extends Component {
       case 'BUBBLE_SORT': return 'Bubble Sort';
       case 'MERGE_SORT': return 'Merge Sort';
       case 'QUICK_SORT': return 'Quick Sort';
+      case 'HEAP_SORT': return 'Heap Sort';
       default: {
         console.error('No algorithm provided for conversion to title case');
       }
@@ -77,6 +78,7 @@ class ControlBar extends Component {
             </button>
             <div className="dropdown-menu">
               <h1 className="dropdown-header text-large">Select Algorithm</h1>
+              <div className="dropdown-divider"></div>
               <button
                 className="dropdown-item"
                 value='BUBBLE_SORT'
@@ -95,6 +97,13 @@ class ControlBar extends Component {
                 value='QUICK_SORT'
                 onClick={this.changeAlgorithm}>
                 Quick Sort
+              </button>
+              <div className="dropdown-divider"></div>
+              <button
+                className="dropdown-item"
+                value='HEAP_SORT'
+                onClick={this.changeAlgorithm}>
+                Heap Sort
               </button>
             </div>
           </div>
