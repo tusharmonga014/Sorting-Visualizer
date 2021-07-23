@@ -1,7 +1,7 @@
 import { store } from "../store";
 import { storeDispatch, getTimeDelay } from "./helpers";
 import { setCurrentlyChecking } from "../actions/currentlyChecking";
-import { setSortedArray } from "../actions/sortedArray";
+import { addToSortedArray } from "../actions/sortedArray";
 import { swapValues } from "../actions/array";
 import { setPivot } from "../actions/pivot";
 
@@ -58,7 +58,7 @@ function updateArrayAfterTimeDelay(QueueObject, timeDelayIterator) {
         setTimeout(() => {
             storeDispatch([], setCurrentlyChecking);
         }, getTimeDelay() * (timeDelayIterator - 1));
-        
+
         /**
          * Updating array with changed array
          */
@@ -144,9 +144,6 @@ function quickSort() {
     // We perform the quick sort on a copy of store's state Array
     quickSortRecursive(localArray, 0, localArray.length - 1);
 
-    // Stores all indices of the array which will be used for filling sortedArray
-    const allIndicesArray = [];
-
     // Performing the Queued changes in the array
     for (var i = 0; i < Queue.length; i++) {
         /**
@@ -164,12 +161,11 @@ function quickSort() {
          * On last iteration, adding another setTimeout()
          * to the list of setTimeouts to fill sortedArray
          */
-        // Adding current index to allIndicesArray
-        allIndicesArray.push(i);
         // THIS EXECUTES AFTER ALL THE OTHER setTimeout ABOVE IN LOOP
         if (i === Queue.length - 1) {
             setTimeout(() => {
-                storeDispatch(allIndicesArray, setSortedArray);
+                for (let arrayIterator = 0; arrayIterator < localArray.length; arrayIterator++)
+                    storeDispatch(arrayIterator, addToSortedArray);
             }, getTimeDelay() * (i + 2));
         }
     }

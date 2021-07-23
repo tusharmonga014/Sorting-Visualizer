@@ -69,6 +69,22 @@ class ArrayBars extends Component {
         barHeightDisplayBox.style.zIndex = 0;
     }
 
+    /**
+     * Enables the control-bar buttons which were 
+     * disabled when sorting started
+     */
+    enableButtonsWhenArrayIsSorted = () => {
+        const { array, sortedArray } = this.props;
+
+        if (array.length === sortedArray.length) {
+            const buttonsToBeEnabled = document.getElementsByClassName('disable-when-running');
+            
+            for (let buttonIterator = 0; buttonIterator < buttonsToBeEnabled.length; buttonIterator++) {
+                buttonsToBeEnabled[buttonIterator].removeAttribute('disabled');
+            }
+        }
+    }
+
     render() {
 
         const { array, currentlyChecking, pivot, sortedArray } = this.props;
@@ -88,6 +104,7 @@ class ArrayBars extends Component {
                             backgroundColor = idx === pivot ? BAR_COLOUR_PIVOT : backgroundColor;
                             backgroundColor = sortedArray.includes(idx) ? BAR_COLOUR_SORTED : backgroundColor;
                             let barIdForHeightDisplay = 'bar' + idx;
+                            this.enableButtonsWhenArrayIsSorted();
 
                             return (
                                 <div key={idx}>

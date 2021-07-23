@@ -1,6 +1,6 @@
 import { setValue } from "../actions/array";
 import { setCurrentlyChecking } from "../actions/currentlyChecking";
-import { setSortedArray } from "../actions/sortedArray";
+import { addToSortedArray } from "../actions/sortedArray";
 import { store } from "../store";
 import { getTimeDelay, storeDispatch } from "./helpers";
 
@@ -229,9 +229,6 @@ function mergeSort() {
     // We perform the merge sort on a copy of store's state Array
     mergeSortRecursive(localArray, 0, state.array.length - 1);
 
-    // Stores all indices of the array which will be used for filling sortedArray
-    const allIndicesArray = [];
-
     // Performing the Queued changes in the array
     for (var i = 0; i < Queue.length; i++) {
         /**
@@ -249,12 +246,11 @@ function mergeSort() {
          * On last iteration, adding another setTimeout()
          * to the list of setTimeouts to fill sortedArray
          */
-        // Adding current index to allIndicesArray
-        allIndicesArray.push(i);
         // THIS EXECUTES AFTER ALL THE OTHER setTimeout ABOVE IN LOOP
         if (i === Queue.length - 1) {
             setTimeout(() => {
-                storeDispatch(allIndicesArray, setSortedArray);
+                for (let arrayIterator = 0; arrayIterator < localArray.length; arrayIterator++)
+                    storeDispatch(arrayIterator, addToSortedArray);
             }, getTimeDelay() * (i + 2));
         }
     }

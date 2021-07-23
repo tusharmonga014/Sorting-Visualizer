@@ -1,6 +1,6 @@
 import { swapValues } from "../actions/array";
 import { setCurrentlyChecking } from "../actions/currentlyChecking";
-import { addToSortedArray, setSortedArray } from "../actions/sortedArray";
+import { addToSortedArray } from "../actions/sortedArray";
 import { store } from "../store";
 import { getTimeDelay, storeDispatch } from "./helpers";
 

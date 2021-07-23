@@ -22,7 +22,7 @@ const getRandomValue = (lowerLimit, upperLimit) => {
  * Returns a random array pf specified Length
  * @param {*} arraySize Length of the array to be formed
  * @returns A random values array of length = arraySize
- */ 
+ */
 const generateRandomArray = (arraySize) => {
     const array = [];
     const lowerLimit = ARRAY_MIN_VALUE;
@@ -46,7 +46,8 @@ const empty_CurrentlyArray_and_SortedArray = (dispatch) => {
 const mapStateToProps = (state) => {
     const array = state.array;
     const algorithm = state.algorithm;
-    return { array, algorithm }
+    const runningStatus = state.runningStatus;
+    return { array, algorithm, runningStatus }
 }
 
 const mapDispatchToProps = () => dispatch => ({
@@ -82,9 +83,13 @@ const mapDispatchToProps = () => dispatch => ({
     /**
      * Starts the sorting
      */
-    sort: () => {
+    startSorting: () => {
         empty_CurrentlyArray_and_SortedArray(dispatch);
         sort();
+    },
+
+    stopSorting: () => {
+        // window.clearTimeout()
     }
 });
 

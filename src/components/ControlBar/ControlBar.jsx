@@ -41,8 +41,16 @@ class ControlBar extends Component {
     this.props.changeSpeed(selectedSpeed);
   }
 
+  disableButtons = () => {
+    const buttonsToBeDisabled = document.getElementsByClassName('disable-when-running');
+    for (let buttonIterator = 0; buttonIterator < buttonsToBeDisabled.length; buttonIterator++) {
+      buttonsToBeDisabled[buttonIterator].setAttribute('disabled', true);
+    }
+  }
+
   startSorting = () => {
-    this.props.sort();
+    this.disableButtons();
+    this.props.startSorting();
   }
 
   componentDidMount() {
@@ -51,7 +59,7 @@ class ControlBar extends Component {
 
 
   render() {
-    const { array } = this.props;
+    const { array, runningStatus } = this.props;
     const arraySize = array.length;
 
     return (
@@ -61,7 +69,7 @@ class ControlBar extends Component {
         </div>
 
         <div className="col-sm-12 col-md-6 col-lg-3  text-center">
-          <button className='generate-array-button btn btn-white btn-round mt-1 mb-1 mr-2'
+          <button className='generate-array-button btn btn-white btn-round mt-1 mb-1 mr-2 disable-when-running'
             onClick={() => { this.resetArray(arraySize) }}>
             Generate New Array
           </button>
@@ -70,7 +78,7 @@ class ControlBar extends Component {
             <button
               type="button"
               id="dropdown-algo-selector"
-              className="btn btn-success dropdown-toggle"
+              className="btn btn-success dropdown-toggle disable-when-running"
               data-toggle="dropdown"
               aria-haspopup="true"
               aria-expanded="false">
@@ -117,7 +125,7 @@ class ControlBar extends Component {
 
         <div className='col-2 row'>
           <input
-            className='array-size-range-button mb-1'
+            className='slider mb-1 disable-when-running'
             type="range"
             min={MIN_ARRAY_SIZE}
             max={MAX_ARRAY_SIZE}
@@ -125,7 +133,7 @@ class ControlBar extends Component {
             onChange={this.changeArraySize}
           />
           <input
-            className='sorting-speed-range-button mt-1'
+            className='slider mt-1 disable-when-running'
             type="range"
             min="1"
             max={SORTING_SPEED_UPPER_LIMIT}
