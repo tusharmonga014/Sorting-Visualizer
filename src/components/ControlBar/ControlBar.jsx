@@ -90,11 +90,11 @@ class ControlBar extends Component {
 
     return (
       <div className='nav navbar navbar-dark bg-dark text-center p-3'>
-        <div className='navbar navbar-brand col-sm-12 col-md-6 col-lg-3 text-center m-0 p-0'>
+        <div className='navbar navbar-brand col-sm-12 col-md-6 col-lg-4 text-center m-0 p-0'>
           <h2>SORTING VISUALIZER</h2>
         </div>
 
-        <div className="col-sm-12 col-md-6 col-lg-3  text-center">
+        <div className="col-sm-12 col-md-6 col-lg-3 text-center m-0 p-0 array-algo-buttons">
           <button className='generate-array-button btn btn-white btn-round mt-1 mb-1 mr-2 input-disable-when-running'
             onClick={() => { this.resetArray(arraySize) }}>
             Generate New Array
@@ -144,22 +144,22 @@ class ControlBar extends Component {
         </div>
 
         <div className='col-md-12 col-lg-3 row slider-controls'>
-          <div className='text-white text-center text-disable-when-running slider-controls col-sm-3 col-md-6 col-lg-6'>
+          <div className='text-white text-center text-disable-when-running slider-controls col-sm-3 col-md-6 col-lg-6 mt-1 mb-1'>
             Array Size :
           </div>
           <input
-            className='input-disable-when-running text-center slider-controls slider-range col-sm-7 col-md-6 col-lg-6'
+            className='input-disable-when-running text-center slider-controls slider-range col-sm-7 col-md-6 col-lg-6 mt-1 mb-1'
             type="range"
             min={MIN_ARRAY_SIZE}
             max={MAX_ARRAY_SIZE}
             defaultValue={DEFAULT_ARRAY_SIZE}
             onChange={this.changeArraySize}
           />
-          <div className='text-white text-center text-disable-when-running slider-controls col-sm-3 col-md-6 col-lg-6'>
+          <div className='text-white text-center text-disable-when-running slider-controls col-sm-3 col-md-6 col-lg-6 mb-1'>
             Sorting Speed :
           </div>
           <input
-            className='input-disable-when-running text-center slider-controls slider-range col-sm-7 col-md-6 col-lg-6'
+            className='input-disable-when-running text-center slider-controls slider-range col-sm-7 col-md-6 col-lg-6 mb-1'
             type="range"
             min="1"
             max={SORTING_SPEED_UPPER_LIMIT}
@@ -168,11 +168,13 @@ class ControlBar extends Component {
           />
         </div>
 
-        <button
-          className="btn btn-success mr-4 col-sm-12 col-md-12 col-lg-2"
-          onClick={this.startSorting}>
-          START SORTING
-        </button>
+        <div className="col-sm-12 col-md-12 col-lg-2 text-center">
+          <button
+            className="btn btn-success"
+            onClick={this.startSorting}>
+            START SORTING
+          </button>
+        </div>
 
       </div>
     )

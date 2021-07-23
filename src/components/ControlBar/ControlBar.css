@@ -1,9 +1,12 @@
 /* classes */
 
 .nav {
-    -webkit-box-shadow: 0 8px 8x 0px #999;
     -moz-box-shadow: 0 8px 8px 0px #999;
+    -webkit-box-shadow: 0 8px 8x 0px #999;
     box-shadow: 0 8px 8px 0px #999;
+    position: absolute;
+    top: 0;
+    width: 100%;
 }
 
 .slider-controls {

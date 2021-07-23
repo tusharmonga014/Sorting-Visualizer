@@ -110,7 +110,7 @@ class ArrayBars extends Component {
         const barsDisplayAreaWidth = this.getBarsDisplayAreaWidth(arraySize);
         const marginBetween = this.getMarginBetweenBars(arraySize);
         const barWidth = this.getBarWidth(arraySize, barsDisplayAreaWidth, marginBetween);
-        const displayBarHeight = arraySize < 23 ? true : false;
+        const displayBarHeight = window.screen.width >= 500 && arraySize < 23 ? true : false;
 
         return (
             <div>
@@ -120,7 +120,7 @@ class ArrayBars extends Component {
                             let backgroundColor = currentlyChecking.includes(idx) ? BAR_COLOUR_WHILE_CHECKING : BAR__COLOUR_DEFAULT;
                             backgroundColor = idx === pivot ? BAR_COLOUR_PIVOT : backgroundColor;
                             backgroundColor = sortedArray.includes(idx) ? BAR_COLOUR_SORTED : backgroundColor;
-                            let barIdForHeightDisplay = 'bar' + idx;
+                            const barIdForHeightDisplay = 'bar' + idx;
                             this.enableControlbarFeaturesWhenArrayIsSorted();
 
                             return (

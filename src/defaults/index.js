@@ -1,7 +1,7 @@
 /**
  * Array's lowest value
  */
-const ARRAY_MIN_VALUE = 10;
+const ARRAY_MIN_VALUE = 40;
 /**
  * Array's largest value
  * ARRAY_MAX_VALUE > 500 will overlap with Control-Bar
@@ -12,8 +12,8 @@ const ARRAY_MAX_VALUE = 425;
  * Sorting speed range
  * SORTING_SPEED_LOWER_LIMIT is 0 always
  */
-const SORTING_SPEED_UPPER_LIMIT = 800;
-const DEFAULT_SELECTED_SPEED = 600;
+const SORTING_SPEED_UPPER_LIMIT = 100;
+const DEFAULT_SELECTED_SPEED = 100;
 
 /**
  * Minimum array length
@@ -22,8 +22,8 @@ const MIN_ARRAY_SIZE = 10;
 /**
  * Maximum array length
  */
-const MAX_ARRAY_SIZE = 200;
-const DEFAULT_ARRAY_SIZE = 100;
+const MAX_ARRAY_SIZE = window.screen.width <= 600 ? 100 : 200;
+const DEFAULT_ARRAY_SIZE = MAX_ARRAY_SIZE / 2;
 
 /**
  * Bar colour when its neither sorted 
@@ -57,7 +57,9 @@ const DEFAULT_SELECTED_ALGORITHM = 'MERGE_SORT';
  * @returns space between each bar depending upon the arraySize
  */
 const MARGIN_BETWEEN_BARS = (arraySize) => {
-    return arraySize <= 10 ? 4 : arraySize <= 50 ? 2 : 1
+    return arraySize <= 10 ? 4
+        : arraySize <= 50 ? 2
+            : 1
 };
 
 /**
@@ -69,7 +71,9 @@ const MARGIN_BETWEEN_BARS = (arraySize) => {
  *          1 shows full screen 
  */
 const SCREEN_PERCENTAGE_TO_OCCUPY = (arraySize) => {
-    return arraySize <= 10 ? 0.33 : arraySize <= 50 ? 0.50 : 0.66;
+    return window.screen.width <= 600 ? 0.80
+            : arraySize <= 16? 0.50
+                : 0.66;
 }
 
 /**
