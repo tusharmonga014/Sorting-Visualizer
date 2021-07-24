@@ -71,7 +71,7 @@ class ArrayBars extends Component {
 
     render() {
 
-        const { array, currentlyChecking, pivot, sortedArray } = this.props;
+        const { array, currentlyChecking, pivot, sortedArray, sortingRunStatus } = this.props;
 
         const arraySize = array.length;
         const barsDisplayAreaWidth = this.getBarsDisplayAreaWidth(arraySize);
@@ -86,7 +86,7 @@ class ArrayBars extends Component {
                         array.length > 0 && array.map((bar, idx) => {
                             let backgroundColor = currentlyChecking.includes(idx) ? BAR_COLOUR_WHILE_CHECKING : BAR__COLOUR_DEFAULT;
                             backgroundColor = idx === pivot ? BAR_COLOUR_PIVOT : backgroundColor;
-                            backgroundColor = sortedArray.includes(idx) ? BAR_COLOUR_SORTED : backgroundColor;
+                            backgroundColor = sortedArray.includes(idx) || sortingRunStatus==='COMPLETED' ? BAR_COLOUR_SORTED : backgroundColor;
                             const barIdForHeightDisplay = 'bar' + idx;
 
                             return (

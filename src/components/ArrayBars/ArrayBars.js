@@ -7,7 +7,8 @@ const mapStateToProps = (state) => {
     const currentlyChecking = state.currentlyChecking;
     const pivot = state.pivot;
     const sortedArray = state.sortedArray;
-    return { array, algorithm, currentlyChecking, pivot, sortedArray };
+    const sortingRunStatus = state.sortingRunStatus;
+    return { array, algorithm, currentlyChecking, pivot, sortedArray, sortingRunStatus };
 }
 
 const mapDispatchToProps = () => dispatch => ({
