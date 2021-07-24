@@ -144,7 +144,7 @@ class ControlBar extends Component {
         </div>
 
         <div className='col-md-12 col-lg-3 row slider-controls text-justify-end'>
-          <div className='text-white text-center text-disable-when-running slider-controls col-sm-3 col-md-6 col-lg-6 mt-1 mb-1'>
+          <div className='text-white text-center text-disable-when-running slider-controls col-sm-4 col-md-6 col-lg-6 mt-1 mb-1'>
             Array Size :
           </div>
           <input
@@ -155,7 +155,7 @@ class ControlBar extends Component {
             defaultValue={DEFAULT_ARRAY_SIZE}
             onChange={this.changeArraySize}
           />
-          <div className='text-white text-center text-disable-when-running slider-controls col-sm-3 col-md-6 col-lg-6 mb-1'>
+          <div className='text-white text-center text-disable-when-running slider-controls col-sm-4 col-md-6 col-lg-6 mb-1'>
             Sorting Speed :
           </div>
           <input
