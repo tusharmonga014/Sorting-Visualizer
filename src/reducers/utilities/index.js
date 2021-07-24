@@ -1,7 +1,7 @@
-import { getNewArrayWithSwappedValues } from "./getNewArrayWithSwappedValues";
+import { swapValuesInArray } from "./swapValuesInArray";
 import { setValueInArrayUsingSplice } from "./setValueInArrayUsingSplice";
 
 export {
-    getNewArrayWithSwappedValues,
+    swapValuesInArray,
     setValueInArrayUsingSplice
 }

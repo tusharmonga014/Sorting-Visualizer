@@ -69,39 +69,6 @@ class ArrayBars extends Component {
         barHeightDisplayBox.style.zIndex = 0;
     }
 
-    /**
-     * Enables the control bar's input-label-texts
-     */
-    enableInputs = () => {
-        const buttonsToBeEnabled = document.getElementsByClassName('input-disable-when-running');
-        for (let buttonDisablingIterator = 0; buttonDisablingIterator < buttonsToBeEnabled.length; buttonDisablingIterator++) {
-            buttonsToBeEnabled[buttonDisablingIterator].removeAttribute('disabled');
-        }
-    }
-
-    /**
-     * Enables the control bar's input-label-texts
-     */
-    enableTexts = () => {
-        const textsToBeDisabled = document.getElementsByClassName('text-disable-when-running');
-        for (let textDisablingIterator = 0; textDisablingIterator < textsToBeDisabled.length; textDisablingIterator++) {
-            textsToBeDisabled[textDisablingIterator].classList.remove('text-muted');
-            textsToBeDisabled[textDisablingIterator].classList.add('text-white');
-        }
-    }
-
-    /**
-     * Enables the control-bar buttons which were 
-     * disabled when sorting started
-     */
-    enableControlbarFeaturesWhenArrayIsSorted = () => {
-        const { array, sortedArray } = this.props;
-        if (array.length === sortedArray.length) {
-            this.enableInputs();
-            this.enableTexts();
-        }
-    }
-
     render() {
 
         const { array, currentlyChecking, pivot, sortedArray } = this.props;
@@ -121,7 +88,6 @@ class ArrayBars extends Component {
                             backgroundColor = idx === pivot ? BAR_COLOUR_PIVOT : backgroundColor;
                             backgroundColor = sortedArray.includes(idx) ? BAR_COLOUR_SORTED : backgroundColor;
                             const barIdForHeightDisplay = 'bar' + idx;
-                            this.enableControlbarFeaturesWhenArrayIsSorted();
 
                             return (
                                 <div key={idx}>

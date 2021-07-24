@@ -6,15 +6,18 @@ export const setArray = (payload) => {
 };
 
 /**
- * 
- * @param {*} payload An array of indices i, j 
- * where swapping needs to be done as :
- * Array[i] <-> Array[j]
+ * Swaps the value at firstIdx with secondIdx 
+ * in store's state Array
+ * @param {number} firstIdx first index
+ * @param {number} secondIdx second index
  */
-export const swapValues = (payload) => {
+export const swapValues = (firstIdx, secondIdx) => {
     return {
         type: 'SWAP_VALUES',
-        payload: payload
+        payload: {
+            firstIdx: firstIdx,
+            secondIdx: secondIdx
+        }
     }
 
 }

@@ -5,6 +5,7 @@ import { currentlyChecking } from "./currenltyCheckingReducer";
 import { speed } from "./speedReducer";
 import { pivot } from "./pivotReducer";
 import { sortedArray } from "./sortedArrayReducer";
+import { sortingRunStatus } from "./sortingRunStatus";
 
 const rootReducer = combineReducers({
     array,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
     speed,
     currentlyChecking,
     pivot,
-    sortedArray
+    sortedArray,
+    sortingRunStatus,
 });
 
 export default rootReducer;

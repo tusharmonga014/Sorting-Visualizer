@@ -2,111 +2,94 @@ import { store } from "../store";
 import { swapValues } from "../actions/array";
 import { setCurrentlyChecking } from "../actions/currentlyChecking";
 import { addToSortedArray } from "../actions/sortedArray";
-import { getTimeDelay, storeDispatch } from "./helpers";
-
-/**
- * Executes and updates the array with dispatches after timeDelays
- * @param {number} i Main iterator in bubble sort
- * @param {number} j Checking iterator in bubble sort
- * @param {number} arraySize Length of the array
- * @param {boolean} needToSwap Represents whether value at j index was swapped with (j + 1)'s value
- * @param {boolean} addToSorted Shows whether its the last j value which has been sorted
- * @param {number} timeDelayIterator An increasing value which prevents running all setTimeouts at once
- */
-function updateArrayAfterTimeDelay(i, j, arraySize, needToSwap, addToSorted, timeDelayIterator) {
-
-    setTimeout(() => {
-
-        const currentIndicesArray = [j, j + 1];
-
-        storeDispatch(currentIndicesArray, setCurrentlyChecking);
-
-        if (needToSwap) {
-            storeDispatch(currentIndicesArray, swapValues);
-        }
-
-        setTimeout(() => {
-            storeDispatch([], setCurrentlyChecking);
-        }, getTimeDelay() * (timeDelayIterator - 1));
-
-        if (addToSorted) {
-            storeDispatch(j + 1, addToSortedArray);
-            /**
-             * As the bar at 0th position also needs 
-             * to be added to sortedArray, which doesn't 
-             * get called from inside j loop
-             */
-            if (i === arraySize - 2) {
-                storeDispatch(0, addToSortedArray);
-            }
-        }
-
-    }, getTimeDelay() * timeDelayIterator);
-
-};
+import checkCurrentSortingRunStatus from "./helpers/checkCurrentStatus";
+import sleep from "./helpers/sleep";
+import { sortingCompleted } from "../actions/sortingRunStatus";
 
 /**
  * Performs Bubble Sort on the store's Array
  */
-function bubbleSort() {
+async function bubbleSort() {
 
-    // gets current state object
+    // Gets current state object
     const state = store.getState();
 
-    /**
-     * setTimeout() function inside a loop stacks up and
-     * executes only after the loopand all the iterations 
-     * start together at same time
-     * 
-     * To prevent simultaneous executions of setTimeouts,
-     * we pass an iterator with increasing values.
-     */
-    let timeDelayIterator = 0;
-
-
-    /**
-     * Its a copy of store's state Array.
-     * Here .slice() is really important as
-     * it gives us a deep copy else whatever changes
-     * we make in the loop, they will get updated immediately
-     */
-    const localArray = state.array.slice();
+    // Store's state Array
+    const localArray = state.array;
+    // length of array
     const arraySize = state.array.length;
 
-    // bubble sort algorithm 
-    for (var i = 0; i < arraySize - 1; i++) {
-        for (var j = 0; j < arraySize - i - 1; j++) {
+    // Aborts the sort if value is False
+    let continueSort = true;
 
-            let needToSwap = false;
-            let addToSorted = false;
+    // Bubble sort algorithm 
 
-            if (localArray[j] > localArray[j + 1]) {
-                /**
-                 * We make changes to our localArray according to bubbleSort,
-                 * then  setTimeout, which was stacked up, follows those 
-                 * chnanges of swapping
-                 */
-                let temp = localArray[j];
-                localArray[j] = localArray[j + 1];
-                localArray[j + 1] = temp;
-                needToSwap = true;
+    // Outer loop
+    for (let outerLoopIterator = 0; outerLoopIterator < arraySize - 1; outerLoopIterator++) {
+        let innerLoopIterator = 0;
+
+        //Inner loop
+        for (innerLoopIterator = 0; innerLoopIterator < arraySize - outerLoopIterator - 1; innerLoopIterator++) {
+
+            // Checking if Paused or Stopped
+            continueSort = await checkCurrentSortingRunStatus()
+                .then(() => true)
+                .catch(() => false);
+
+            // Aborting and returing if Stopped
+            if (!continueSort)
+                return;
+
+            // Delays according to selected speed
+            await sleep();
+
+            // Setting the current indices which are being checked to currentlyChecking
+            store.dispatch(setCurrentlyChecking([innerLoopIterator, innerLoopIterator + 1]));
+
+            if (localArray[innerLoopIterator] > localArray[innerLoopIterator + 1]) {
+
+                // Checking if Paused or Stopped
+                continueSort = await checkCurrentSortingRunStatus()
+                    .then(() => true)
+                    .catch(() => false);
+
+                // Aborting and returing if Stopped
+                if (!continueSort)
+                    return;
+
+                // Delays according to selected speed
+                await sleep();
+
+                // Swaps the values in store's state Array
+                store.dispatch(swapValues(innerLoopIterator, innerLoopIterator + 1));
             }
 
-            if (j === arraySize - i - 2) {
-                addToSorted = true;
-            }
+            // Checking if Paused or Stopped
+            continueSort = await checkCurrentSortingRunStatus()
+                .then(() => true)
+                .catch(() => false);
 
-            /** 
-             * Timer() uses j's value to update currentlyChecking and if 
-             * needToSwap is true then also swaps array using j's value
-             * THIS ALL HAPPENS AFTER THESE LOOPS HAVE EXECUTED
-             */
-            updateArrayAfterTimeDelay(i, j, arraySize, needToSwap, addToSorted, timeDelayIterator);
+            // Aborting and returing if Stopped
+            if (!continueSort)
+                return;
 
-            timeDelayIterator += 2;
-
+            // Delays according to selected speed
+            await sleep();
         }
+
+        // Adding the 'j' which has been sorted to sortedArray
+        store.dispatch(addToSortedArray(innerLoopIterator));
     }
+
+    // Removing the first bar as currentlyChecking
+    store.dispatch(setCurrentlyChecking([]));
+
+    // First bar needs to be marked explicitly as 
+    // it doesn't go inside inner loop
+    store.dispatch(addToSortedArray(0));
+
+    // After sorting sets the Sorting Running Status to COMPLETED
+    store.dispatch(sortingCompleted());
 }
 
 export default bubbleSort;

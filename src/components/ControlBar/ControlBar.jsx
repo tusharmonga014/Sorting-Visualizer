@@ -4,10 +4,18 @@ import "./ControlBar.css";
 
 class ControlBar extends Component {
 
+  /**
+   * Generates a new Array of given length
+   * @param {number} arraySize length for new Array
+   */
   resetArray = (arraySize) => {
     this.props.generateArray(arraySize);
   }
 
+  /**
+   * Changes and generates a new array of selected length
+   * @param {event} event Event which trigerred the function
+   */
   changeArraySize = (event) => {
     this.resetArray(event.target.value);
   }
@@ -29,6 +37,10 @@ class ControlBar extends Component {
     }
   }
 
+  /**
+   * Changes the algorithm 
+   * @param {event} event Event which trigerred the function
+   */
   changeAlgorithm = (event) => {
     const selectedAlgo = event.target.value;
     this.props.changeAlgorithm(selectedAlgo);
@@ -36,15 +48,20 @@ class ControlBar extends Component {
     document.getElementById("dropdown-algo-selector").innerText = selectedAlgoTitleCase;
   }
 
+  /**
+  * Changes the algorithm 
+  * @param {event} event Event which trigerred the function
+  */
   changeSpeed = (event) => {
     const selectedSpeed = (Number)(event.target.value);
     this.props.changeSpeed(selectedSpeed);
   }
 
   /**
-   * Disables the control bar inputs
+   * Disables the control bar inputs for 
+   * Array and Algorithm slelection
    */
-  disableInputs = () => {
+  disableArrayAlgorithmInputs = () => {
     const buttonsToBeDisabled = document.getElementsByClassName('input-disable-when-running');
     for (let buttonDisablingIterator = 0; buttonDisablingIterator < buttonsToBeDisabled.length; buttonDisablingIterator++) {
       buttonsToBeDisabled[buttonDisablingIterator].setAttribute('disabled', true);
@@ -52,9 +69,9 @@ class ControlBar extends Component {
   }
 
   /**
-   * Disables the control bar's input-label-texts
+   * Disables the control bar's input-label-texts on the control bar
    */
-  disableTexts = () => {
+  disableArrayAlgorithmTexts = () => {
     const textsToBeDisabled = document.getElementsByClassName('text-disable-when-running');
     for (let textDisablingIterator = 0; textDisablingIterator < textsToBeDisabled.length; textDisablingIterator++) {
       textsToBeDisabled[textDisablingIterator].classList.remove('text-white');
@@ -63,11 +80,114 @@ class ControlBar extends Component {
   }
 
   /**
-   * Disables the control bar features
+   * Enables the control bar inputs for 
+   * Array and Algorithm slelection
    */
-  disableControlBarFeatures = () => {
-    this.disableInputs();
-    this.disableTexts();
+  enableArrayAlgorithmInputs = () => {
+    const buttonsToBeEnabled = document.getElementsByClassName('input-disable-when-running');
+    for (let buttonEnablingIterator = 0; buttonEnablingIterator < buttonsToBeEnabled.length; buttonEnablingIterator++) {
+      buttonsToBeEnabled[buttonEnablingIterator].removeAttribute('disabled');
+    }
+  }
+
+  /**
+   * Enables the control bar's input-label-texts on the control bar
+   */
+  enableArrayAlgorithmTexts = () => {
+    const textsToBeEnabled = document.getElementsByClassName('text-disable-when-running');
+    for (let textEnablingIterator = 0; textEnablingIterator < textsToBeEnabled.length; textEnablingIterator++) {
+      textsToBeEnabled[textEnablingIterator].classList.remove('text-muted');
+      textsToBeEnabled[textEnablingIterator].classList.add('text-white');
+    }
+  }
+
+  /**
+   * Hides start sort button on the control bar
+   */
+  hideStartSortingButton = () => {
+    const startSortingButton = document.getElementById('btn-sort');
+    startSortingButton.setAttribute('hidden', true);
+  }
+
+  /**
+   * Shows start sort button on the control bar
+   */
+  showStartSortingButton = () => {
+    const startSortingButton = document.getElementById('btn-sort');
+    startSortingButton.removeAttribute('hidden');
+  }
+
+  /**
+   * Shows pause button on the control bar
+   */
+  showPauseButton = () => {
+    const pauseButton = document.getElementById('btn-pause');
+    pauseButton.removeAttribute('hidden');
+  }
+
+  /**
+   * Hides pause button on the control bar
+   */
+  hidePauseButton = () => {
+    const pauseButton = document.getElementById('btn-pause');
+    pauseButton.setAttribute('hidden', true);
+  }
+
+  /**
+   * Shows continue button on the control bar
+   */
+  showContinueButton = () => {
+    const continueButton = document.getElementById('btn-continue');
+    continueButton.removeAttribute('hidden');
+  }
+
+  /**
+   * Hides continue button on the control bar
+   */
+  hideContinueButton = () => {
+    const continueButton = document.getElementById('btn-continue');
+    continueButton.setAttribute('hidden', true);
+  }
+
+  /**
+   * Shows the stop sort button on the control bar
+   */
+  showStopSortinButton = () => {
+    const stopSortingButton = document.getElementById('btn-stop-sort');
+    stopSortingButton.removeAttribute('hidden');
+  }
+
+  /**
+   * Hides stop sort button on the control bar
+   */
+  hideStopSortingButton = () => {
+    const stopSortingButton = document.getElementById('btn-stop-sort');
+    stopSortingButton.setAttribute('hidden', true);
+  }
+
+  /**
+   * Disables Array and Algorithm related features
+   * and enables Sorting realted features
+   */
+  manageControlBarFeaturesWhenSortingStarts = () => {
+    this.disableArrayAlgorithmInputs();
+    this.disableArrayAlgorithmTexts();
+    this.hideStartSortingButton();
+    this.showPauseButton();
+    this.showStopSortinButton();
+  }
+
+  /**
+   * Enables Array and Algorithm related features
+   * and enables Sorting realted features
+   */
+  manageControlBarFeaturesWhenSortingStops = () => {
+    this.enableArrayAlgorithmInputs();
+    this.enableArrayAlgorithmTexts();
+    this.hidePauseButton();
+    this.hideContinueButton();
+    this.hideStopSortingButton();
+    this.showStartSortingButton();
   }
 
   /**
@@ -75,8 +195,43 @@ class ControlBar extends Component {
    * and starts sorting
    */
   startSorting = () => {
-    this.disableControlBarFeatures();
+    this.manageControlBarFeaturesWhenSortingStarts();
     this.props.startSorting();
+  }
+
+  /**
+   * Pauses the sorting
+   */
+  pauseSorting = () => {
+    this.props.pauseSorting();
+    this.hidePauseButton();
+    this.showContinueButton();
+  }
+
+  /**
+   * Continues the paused sorting process
+   */
+  continueSorting = () => {
+    this.hideContinueButton();
+    this.showPauseButton();
+    this.props.continueSorting();
+  }
+
+  /**
+   * Stops the current storting process
+   */
+  stopSorting = () => {
+    this.manageControlBarFeaturesWhenSortingStops();
+    this.props.stopSorting();
+  }
+
+  /**
+   * Checks if sorting is completed
+   * and calls the required control
+   * bar manager functions
+   */
+  handleIfSortingCompleted = () => {
+    this.props.sortingRunStatus === 'COMPLETED' && this.manageControlBarFeaturesWhenSortingStops();
   }
 
   componentDidMount() {
@@ -87,6 +242,8 @@ class ControlBar extends Component {
   render() {
     const { array } = this.props;
     const arraySize = array.length;
+
+    this.handleIfSortingCompleted();
 
     return (
       <div className='nav navbar navbar-dark bg-dark text-center p-2'>
@@ -170,10 +327,31 @@ class ControlBar extends Component {
 
         <div className="col-sm-12 col-md-12 col-lg-2 text-center mt-1 mb-1">
           <button
-            className="btn btn-success btn-sort input-disable-when-running"
+            id="btn-sort"
+            className="btn btn-success"
             onClick={this.startSorting}>
             START SORTING
           </button>
+
+          <button
+            id="btn-pause"
+            className="btn btn-default"
+            onClick={this.pauseSorting}
+            hidden>Pause
+          </button>
+          <button
+            id="btn-continue"
+            className="btn btn-default"
+            onClick={this.continueSorting}
+            hidden>Continue
+          </button>
+          <button
+            id="btn-stop-sort"
+            className="btn btn-danger"
+            onClick={this.stopSorting}
+            hidden>STOP
+          </button>
+
         </div>
 
       </div>

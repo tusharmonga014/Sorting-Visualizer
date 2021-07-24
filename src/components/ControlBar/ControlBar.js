@@ -7,6 +7,7 @@ import { setSpeed } from "../../actions/speed/index.js";
 import { setSortedArray } from "../../actions/sortedArray/index.js";
 import { setAlgorithm } from "../../actions/algorithm";
 import { setCurrentlyChecking } from "../../actions/currentlyChecking/index.js";
+import { sortingContinued, sortingPaused, sortingStopped } from "../../actions/sortingRunStatus/index.js";
 
 /**
  * Return a random value in specified range
@@ -46,7 +47,8 @@ const empty_CurrentlyArray_and_SortedArray = (dispatch) => {
 const mapStateToProps = (state) => {
     const array = state.array;
     const algorithm = state.algorithm;
-    return { array, algorithm };
+    const sortingRunStatus = state.sortingRunStatus;
+    return { array, algorithm, sortingRunStatus };
 }
 
 const mapDispatchToProps = () => dispatch => ({
@@ -85,6 +87,31 @@ const mapDispatchToProps = () => dispatch => ({
     startSorting: () => {
         empty_CurrentlyArray_and_SortedArray(dispatch);
         sort();
+    },
+
+    /**
+     * Pauses the current sorting process
+     * by dispatching the sortingPaused
+     */
+    pauseSorting: () => {
+        dispatch(sortingPaused());
+    },
+
+    /**
+     * Continues the paused sorting process
+     * by dispatching sortingContinued
+     */
+    continueSorting: () => {
+        dispatch(sortingContinued());
+    },
+
+    /**
+     * Stops the current sorting process
+     * by dispatching sortingStopped
+     */
+    stopSorting: () => {
+        dispatch(sortingStopped());
+        empty_CurrentlyArray_and_SortedArray(dispatch);
     }
 });
 

@@ -12,8 +12,8 @@ const ARRAY_MAX_VALUE = window.screen.width <= 700 ? 350 : 425;
  * Sorting speed range
  * SORTING_SPEED_LOWER_LIMIT is 0 always
  */
-const SORTING_SPEED_UPPER_LIMIT = 100;
-const DEFAULT_SELECTED_SPEED = 100;
+const SORTING_SPEED_UPPER_LIMIT = 500;
+const DEFAULT_SELECTED_SPEED = 500;
 
 /**
  * Minimum array length
