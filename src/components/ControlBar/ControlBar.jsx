@@ -246,7 +246,7 @@ class ControlBar extends Component {
     this.handleIfSortingCompleted();
 
     return (
-      <div className='nav navbar navbar-dark bg-dark text-center p-2'>
+      <div className='nav navbar navbar-dark bg-dark text-center pt-2 pb-2'>
         <div className='navbar navbar-brand col-sm-12 col-md-6 col-lg-4 text-center m-0 p-0'>
           <h2>SORTING VISUALIZER</h2>
         </div>
@@ -327,6 +327,7 @@ class ControlBar extends Component {
 
         <div className="col-sm-12 col-md-12 col-lg-2 text-center mt-1 mb-1">
           <button
+            hidden
             id="btn-sort"
             className="btn btn-success"
             onClick={this.startSorting}>
@@ -335,21 +336,23 @@ class ControlBar extends Component {
 
           <button
             id="btn-pause"
-            className="btn btn-default"
+            className="btn btn-default btn-when-running mr-1"
             onClick={this.pauseSorting}
-            hidden>Pause
+          >Pause
           </button>
+
           <button
             id="btn-continue"
-            className="btn btn-default"
+            className="btn btn-default btn-when-running mr-1"
             onClick={this.continueSorting}
             hidden>Continue
           </button>
+
           <button
             id="btn-stop-sort"
-            className="btn btn-danger"
+            className="btn btn-danger btn-when-running"
             onClick={this.stopSorting}
-            hidden>STOP
+          >STOP
           </button>
 
         </div>
