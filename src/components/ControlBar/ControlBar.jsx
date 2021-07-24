@@ -251,17 +251,17 @@ class ControlBar extends Component {
           <h2>SORTING VISUALIZER</h2>
         </div>
 
-        <div className="col-sm-12 col-md-6 col-lg-3 text-justify-end m-0 p-0 array-algo-buttons">
-          <button className='generate-array-button btn btn-white btn-round mt-1 mb-1 mr-2 input-disable-when-running'
+        <div className="col-sm-12 col-md-6 col-lg-3 m-0 p-0">
+          <button className='btn btn-white btn-round mt-1 mb-1 mr-2 input-disable-when-running  array-algo-button'
             onClick={() => { this.resetArray(arraySize) }}>
             Generate New Array
           </button>
 
-          <div className="btn-group">
+          <div className="btn-group array-algo-button">
             <button
               type="button"
               id="dropdown-algo-selector"
-              className="btn btn-success dropdown-toggle input-disable-when-running"
+              className="btn btn-success dropdown-toggle input-disable-when-running col-12"
               data-toggle="dropdown"
               aria-haspopup="true"
               aria-expanded="false">
@@ -327,7 +327,6 @@ class ControlBar extends Component {
 
         <div className="col-sm-12 col-md-12 col-lg-2 text-center mt-1 mb-1">
           <button
-            hidden
             id="btn-sort"
             className="btn btn-success"
             onClick={this.startSorting}>
@@ -338,7 +337,8 @@ class ControlBar extends Component {
             id="btn-pause"
             className="btn btn-default btn-when-running mr-1"
             onClick={this.pauseSorting}
-          >Pause
+            hidden>
+            Pause
           </button>
 
           <button
@@ -352,7 +352,8 @@ class ControlBar extends Component {
             id="btn-stop-sort"
             className="btn btn-danger btn-when-running"
             onClick={this.stopSorting}
-          >STOP
+            hidden>
+            Stop
           </button>
 
         </div>
