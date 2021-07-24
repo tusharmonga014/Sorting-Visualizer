@@ -1,6 +1,5 @@
 import { setValue } from "../actions/array";
 import { setCurrentlyChecking } from "../actions/currentlyChecking";
-import { addToSortedArray } from "../actions/sortedArray";
 import { sortingCompleted } from "../actions/sortingRunStatus";
 import { store } from "../store";
 import checkCurrentSortingRunStatus from "./helpers/checkCurrentStatus";
@@ -248,6 +247,7 @@ async function mergeSortRecursive(localArray, leftIdx, rightIdx) {
             await mergeSortRecursive(localArray, leftIdx, midIdx)
             await mergeSortRecursive(localArray, midIdx + 1, rightIdx);
             await merge(localArray, leftIdx, midIdx, rightIdx);
+            return true;
         })
         .catch(() => false);
 
