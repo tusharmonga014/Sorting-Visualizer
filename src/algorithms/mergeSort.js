@@ -74,10 +74,8 @@ async function merge(localArray, leftIdx, midIdx, rightIdx) {
             .catch(() => false);
 
         // Aborting and returing if Stopped
-        if (!continueSort) {
-            store.dispatch(setCurrentlyChecking([]));
+        if (!continueSort)
             return;
-        }
 
         // Delays according to selected speed
         await sleep();
@@ -96,10 +94,8 @@ async function merge(localArray, leftIdx, midIdx, rightIdx) {
                 .catch(() => false);
 
             // Aborting and returing if Stopped
-            if (!continueSort) {
-                store.dispatch(setCurrentlyChecking([]));
+            if (!continueSort)
                 return;
-            }
 
             // Delays according to selected speed
             await sleep();
@@ -116,10 +112,9 @@ async function merge(localArray, leftIdx, midIdx, rightIdx) {
                 .catch(() => false);
 
             // Aborting and returing if Stopped
-            if (!continueSort) {
-                store.dispatch(setCurrentlyChecking([]));
+            if (!continueSort)
                 return;
-            }
+
 
             // Delays according to selected speed
             await sleep();
@@ -151,10 +146,8 @@ async function merge(localArray, leftIdx, midIdx, rightIdx) {
             .catch(() => false);
 
         // Aborting and returing if Stopped
-        if (!continueSort) {
-            store.dispatch(setCurrentlyChecking([]));
+        if (!continueSort)
             return;
-        }
 
         // Delays according to selected speed
         await sleep();
@@ -171,10 +164,8 @@ async function merge(localArray, leftIdx, midIdx, rightIdx) {
             .catch(() => false);
 
         // Aborting and returing if Stopped
-        if (!continueSort) {
-            store.dispatch(setCurrentlyChecking([]));
+        if (!continueSort)
             return;
-        }
 
         // Delays according to selected speed
         await sleep();
@@ -195,10 +186,8 @@ async function merge(localArray, leftIdx, midIdx, rightIdx) {
             .catch(() => false);
 
         // Aborting and returing if Stopped
-        if (!continueSort) {
-            store.dispatch(setCurrentlyChecking([]));
+        if (!continueSort)
             return;
-        }
 
         // Delays according to selected speed
         await sleep();
@@ -215,10 +204,8 @@ async function merge(localArray, leftIdx, midIdx, rightIdx) {
             .catch(() => false);
 
         // Aborting and returing if Stopped
-        if (!continueSort) {
-            store.dispatch(setCurrentlyChecking([]));
+        if (!continueSort)
             return;
-        }
 
         // Delays according to selected speed
         await sleep();
@@ -252,9 +239,8 @@ async function mergeSortRecursive(localArray, leftIdx, rightIdx) {
         .catch(() => false);
 
     // Aborting and returing if Stopped
-    if (!continueSort) {
+    if (!continueSort)
         return;
-    }
 }
 
 /**
@@ -279,17 +265,16 @@ async function mergeSort() {
      * 
      * Also check if sort was not stopped
      */
-    let continueSort = await checkCurrentSortingRunStatus()
-        .then(() => {
-            store.dipatch(sortingCompleted());
-            return true;
-        })
-        .catch(() => false);
+    let sortAborted = await checkCurrentSortingRunStatus()
+        .then(() => false)
+        .catch(() => true);
 
-    if (!continueSort) {
+    // If sort was stopped then empty the currentlyChecking array
+    if (sortAborted)
         store.dispatch(setCurrentlyChecking([]));
-        return;
-    }
+    // Else sort was not aborted then mark sort as COMPLETED
+    else
+        store.dispatch(sortingCompleted());
 }
 
 export default mergeSort;
