@@ -6,14 +6,21 @@ import sleep from "./sleep";
  * @returns True for continuing, False for stopping
  */
 export async function continueAfterDelayIfNotStopped() {
-    return await Promise.all([
-        // Checking if Paused or Stopped
-        checkCurrentSortingRunStatus(),
-        // Delays according to selected speed
-        sleep(),
-        // Checking if Paused or Stopped
-        checkCurrentSortingRunStatus()
-    ])
+
+    // Checking if Paused or Stopped
+    let checkFurther = await checkCurrentSortingRunStatus()
         .then(() => true)
         .catch(() => false);
+    if (!checkFurther)
+        return false;
+
+    // Delaying accroding to selected speed
+    await sleep();
+
+    // Checking if Paused or Stopped
+    let finalCheckResult = await checkCurrentSortingRunStatus()
+        .then(() => true)
+        .catch(() => false);
+
+    return finalCheckResult;
 }

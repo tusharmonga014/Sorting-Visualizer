@@ -1,174 +1,148 @@
-// import { store } from "../store";
-// import { storeDispatch, getTimeDelay } from "./helpers";
-// import { setCurrentlyChecking } from "../actions/currentlyChecking";
-// import { addToSortedArray } from "../actions/sortedArray";
-// import { swapValues } from "../actions/array";
-// import { setPivot } from "../actions/pivot";
+import { store } from "../store";
+import { setCurrentlyChecking } from "../actions/currentlyChecking";
+import { addToSortedArray } from "../actions/sortedArray";
+import { swapValues } from "../actions/array";
+import { setPivot } from "../actions/pivot";
+import { continueAfterDelayIfNotStopped } from "./helpers/continueAfterDelayIfNotStopped";
+import checkCurrentSortingRunStatus from "./helpers/checkCurrentStatus";
+import { sortingCompleted } from "../actions/sortingRunStatus";
 
-// /**
-//  * 
-//  * **********************************************************
-//  *
-//  * We perform the quick sort on a copy of store's state Array
-//  * and keep a track of changes in array and the pivot points
-//  * 
-//  * **********************************************************
-//  * 
-//  * Then we update our state array step-by-step according 
-//  * to our tracked changes
-//  * 
-//  * **********************************************************
-//  * 
-//  */
+/**
+ * 
+ * @param {Array} localArray Copy of the array on which we want to we want to perform Quick Sort
+ * @param {number} startIdx Starting index 
+ * @param {number} endIdx Ending index 
+ * @returns Pivot index
+ */
+async function partition(localArray, startIdx, endIdx) {
 
-// /**
-//  * -- We didn't need a queue in Bubble Sort because it wasn't recursive --
-//  * 
-//  * This keeps a track of changes in the array an the indices
-//  * It stores an object for each change,
-//  * firstIdx : index for first subarray,
-//  * secondIdx : index for second subarray
-//  * pivot : currently selected pivot point
-//  */
-// let Queue = [];
+    // Taking the last element as the pivot
+    /**
+     * Value at selected(last element) pivot
+     */
+    const pivotValue = localArray[endIdx];
+    store.dispatch(setPivot(endIdx));
 
-// /**
-//  * It takes an object and a timeDelayIterator as arguments and update the
-//  * store's state Array after delayed time
-//  * @param {*} QueueObject The Object which contains one specific change
-//  * @param {*} timeDelayIterator An increasing value which prevents 
-//  * running all setTimeouts at once
-//  */
-// function updateArrayAfterTimeDelay(QueueObject, timeDelayIterator) {
-//     setTimeout(() => {
+    /**
+     * Shows uptill where the value is smaller than pivotValue
+     */
+    let pivotIdx = startIdx;
 
-//         const { firstIdx, secondIdx, pivot } = QueueObject;
-//         const indices = [firstIdx, secondIdx];
+    // Aborts the sort if value is False
+    let continueSort = true;
 
-//         /**
-//          * Shows the indices of the first and second 
-//          * which are being compared currently
-//          */
-//         storeDispatch(indices, setCurrentlyChecking);
-//         storeDispatch(pivot, setPivot);
+    for (let idx = startIdx; idx < endIdx; idx++) {
 
-//         /**
-//          * Removing the marking on indices
-//          */
-//         setTimeout(() => {
-//             storeDispatch([], setCurrentlyChecking);
-//         }, getTimeDelay() * (timeDelayIterator - 1));
+        // Check if stopped or paused - delay accoring to selected speed - again check
+        continueSort = await continueAfterDelayIfNotStopped();
+        // Return if stopped
+        if (!continueSort)
+            return;
 
-//         /**
-//          * Updating array with changed array
-//          */
-//         storeDispatch(indices, swapValues);
+        /**
+         * Shows the indices of the first and second 
+         * which are being compared currently
+         */
+        store.dispatch(setCurrentlyChecking([idx, pivotIdx]));
 
-//     }, getTimeDelay() * timeDelayIterator);
-// }
+        if (localArray[idx] < pivotValue) {
+            // Check if stopped or paused - delay accoring to selected speed - again check
+            continueSort = await continueAfterDelayIfNotStopped();
+            // Return if stopped
+            if (!continueSort)
+                return;
 
-// /**
-//  * 
-//  * @param {Array} localArray Copy of the array on which we want to we want to perform Quick Sort
-//  * @param {number} startIdx Starting index 
-//  * @param {number} endIdx Ending index 
-//  * @returns Pivot index
-//  */
-// function partition(localArray, startIdx, endIdx) {
+            // Swapping the value
+            store.dispatch(swapValues(idx, pivotIdx));
 
-//     // Taking the last element as the pivot
-//     /**
-//      * Value at selected(last element) pivot
-//      */
-//     const pivotValue = localArray[endIdx];
+            // Moving to next element
+            pivotIdx++;
+        }
 
-//     /**
-//      * Shows uptill where the value is smaller than pivotValue
-//      */
-//     let pivotIdx = startIdx;
-//     for (let idx = startIdx; idx < endIdx; idx++) {
-//         if (localArray[idx] < pivotValue) {
-//             // Swapping elements
-//             [localArray[idx], localArray[pivotIdx]] = [localArray[pivotIdx], localArray[idx]];
-//             // Moving to next element
-//             pivotIdx++;
-//             Queue.push({
-//                 firstIdx: idx,
-//                 secondIdx: pivotIdx - 1,
-//                 pivot: endIdx
-//             })
-//         }
-//     }
+        // Check if stopped or paused - delay accoring to selected speed - again check
+        continueSort = await continueAfterDelayIfNotStopped();
+        // Return if stopped
+        if (!continueSort)
+            return;
 
-//     // Putting the pivot value in the middle
-//     [localArray[pivotIdx], localArray[endIdx]] = [localArray[endIdx], localArray[pivotIdx]]
-//     Queue.push({
-//         firstIdx: pivotIdx,
-//         secondIdx: endIdx,
-//         pivot: -1
-//     })
+        /**
+         * Removing the marking on indices
+         */
+        store.dispatch(setCurrentlyChecking([]));
+    }
 
-//     return pivotIdx;
-// };
+    // store.dispatch(setPivot(null));
 
-// function quickSortRecursive(localArray, startIdx, endIdx) {
-//     // Base case or terminating case
-//     if (startIdx >= endIdx) {
-//         return;
-//     }
+    // Check if stopped or paused - delay accoring to selected speed - again check
+    continueSort = await continueAfterDelayIfNotStopped();
+    // Return if stopped
+    if (!continueSort)
+        return;
 
-//     // Returns pivotIndex
-//     const pivotIdx = partition(localArray, startIdx, endIdx);
+    // Putting the pivot value in the middle
+    store.dispatch(swapValues(endIdx, pivotIdx));
 
-//     // Recursively apply the same logic to the left and right subarrays
-//     quickSortRecursive(localArray, startIdx, pivotIdx - 1);
-//     quickSortRecursive(localArray, pivotIdx + 1, endIdx);
-// }
+    return pivotIdx;
+};
 
-// function quickSort() {
+async function quickSortRecursive(localArray, startIdx, endIdx) {
+    // Base case or terminating case
+    if (startIdx >= endIdx) {
+        return;
+    }
 
-//     // gets current state object
-//     const state = store.getState();
+    // Returns pivotIndex
+    const pivotIdx = await partition(localArray, startIdx, endIdx);
 
-//     /**
-//     * Its a copy of store's state Array.
-//     * Here .slice() is really important as
-//     * it gives us a deep copy else whatever changes
-//     * we make in the loop, they will get updated immediately
-//     */
-//     let localArray = state.array.slice();
+    let continueSort = await checkCurrentSortingRunStatus()
+        .then(async () => {
+            // Recursively apply the same logic to the left and right subarrays
+            store.dispatch(addToSortedArray(pivotIdx));
+            await quickSortRecursive(localArray, startIdx, pivotIdx - 1);
+            // Marking first index for this part as sorted
+            store.dispatch(addToSortedArray(startIdx));
+            await quickSortRecursive(localArray, pivotIdx + 1, endIdx);
+            // Marking first index for this part as sorted
+            store.dispatch(addToSortedArray(pivotIdx + 1));
+        })
+        .catch(() => false);
+    // Aborting and returing if Stopped
+    if (!continueSort)
+        return;
+}
 
-//     // So that it clears prevoius memory.. as it is a global variable maintaining memory across files
-//     Queue = [];
+async function quickSort() {
 
-//     // We perform the quick sort on a copy of store's state Array
-//     quickSortRecursive(localArray, 0, localArray.length - 1);
+    // Gets current state object
+    const state = store.getState();
 
-//     // Performing the Queued changes in the array
-//     for (var i = 0; i < Queue.length; i++) {
-//         /**
-//         * setTimeout() function inside a loop stacks up and
-//         * executes only after the loop and all the iterations 
-//         * start together at same time
-//         * 
-//         * To prevent simultaneous executions of setTimeouts,
-//         * we pass an iterator with increasing values.
-//         */
-//         //i is passed as timeDealyIterator
-//         updateArrayAfterTimeDelay(Queue[i], i + 2);
+    // Store's state Array
+    const localArray = state.array;
+    // length of array
+    const arraySize = state.array.length;
 
-//         /**
-//          * On last iteration, adding another setTimeout()
-//          * to the list of setTimeouts to fill sortedArray
-//          */
-//         // THIS EXECUTES AFTER ALL THE OTHER setTimeout ABOVE IN LOOP
-//         if (i === Queue.length - 1) {
-//             setTimeout(() => {
-//                 for (let arrayIterator = 0; arrayIterator < localArray.length; arrayIterator++)
-//                     storeDispatch(arrayIterator, addToSortedArray);
-//             }, getTimeDelay() * (i + 2));
-//         }
-//     }
-// }
+    // Performing quick sort on the array
+    await quickSortRecursive(localArray, 0, arraySize - 1);
 
-// export default quickSort;
+    // Remove the pivot regardless of whether sort was completed or stoped
+    store.dispatch(setPivot(null));
+
+    /**
+     * After sorting sets the Sorting Running Status to COMPLETED
+     * it will automatically check and make them sorted colour
+     * 
+     * Also check if sort was not stopped
+     */
+    let sortAborted = await checkCurrentSortingRunStatus()
+        .then(() => false)
+        .catch(() => true);
+
+    // If sort was stopped then empty the currentlyChecking array
+    if (sortAborted)
+        store.dispatch(setCurrentlyChecking([]));
+    // Else sort was not aborted then mark sort as COMPLETED
+    else
+        store.dispatch(sortingCompleted());
+}
+
+export default quickSort;
