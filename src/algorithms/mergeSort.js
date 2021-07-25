@@ -3,6 +3,7 @@ import { setCurrentlyChecking } from "../actions/currentlyChecking";
 import { sortingCompleted } from "../actions/sortingRunStatus";
 import { store } from "../store";
 import checkCurrentSortingRunStatus from "./helpers/checkCurrentStatus";
+import { continueAfterDelayIfNotStopped } from "./helpers/continueAfterDelayIfNotStopped";
 import sleep from "./helpers/sleep";
 
 /**
@@ -68,17 +69,11 @@ async function merge(localArray, leftIdx, midIdx, rightIdx) {
 
     while (i < n1 && j < n2) {
 
-        // Checking if Paused or Stopped
-        continueSort = await checkCurrentSortingRunStatus()
-            .then(() => true)
-            .catch(() => false);
-
-        // Aborting and returing if Stopped
+        // Check if stopped or paused - delay accoring to selected speed - again check
+        continueSort = await continueAfterDelayIfNotStopped();
+        // Return if stopped
         if (!continueSort)
             return;
-
-        // Delays according to selected speed
-        await sleep();
 
         /**
          * i : leftIdx + 1, j : midIdx + j + 1 because : 
@@ -88,17 +83,11 @@ async function merge(localArray, leftIdx, midIdx, rightIdx) {
 
         if (leftLocalArray[i] <= rightLocalArray[j]) {
 
-            // Checking if Paused or Stopped
-            continueSort = await checkCurrentSortingRunStatus()
-                .then(() => true)
-                .catch(() => false);
-
-            // Aborting and returing if Stopped
+            // Check if stopped or paused - delay accoring to selected speed - again check
+            continueSort = await continueAfterDelayIfNotStopped();
+            // Return if stopped
             if (!continueSort)
                 return;
-
-            // Delays according to selected speed
-            await sleep();
 
             store.dispatch(setValue(k, leftLocalArray[i]));
 
@@ -106,18 +95,11 @@ async function merge(localArray, leftIdx, midIdx, rightIdx) {
         }
         else {
 
-            // Checking if Paused or Stopped
-            continueSort = await checkCurrentSortingRunStatus()
-                .then(() => true)
-                .catch(() => false);
-
-            // Aborting and returing if Stopped
+            // Check if stopped or paused - delay accoring to selected speed - again check
+            continueSort = await continueAfterDelayIfNotStopped();
+            // Return if stopped
             if (!continueSort)
                 return;
-
-
-            // Delays according to selected speed
-            await sleep();
 
             store.dispatch(setValue(k, rightLocalArray[j]));
 
@@ -140,12 +122,9 @@ async function merge(localArray, leftIdx, midIdx, rightIdx) {
     // leftLocalArray[], if there are any
     while (i < n1) {
 
-        // Checking if Paused or Stopped
-        continueSort = await checkCurrentSortingRunStatus()
-            .then(() => true)
-            .catch(() => false);
-
-        // Aborting and returing if Stopped
+        // Check if stopped or paused - delay accoring to selected speed - again check
+        continueSort = await continueAfterDelayIfNotStopped();
+        // Return if stopped
         if (!continueSort)
             return;
 
@@ -158,17 +137,11 @@ async function merge(localArray, leftIdx, midIdx, rightIdx) {
          */
         store.dispatch(setCurrentlyChecking([leftIdx + i]));
 
-        // Checking if Paused or Stopped
-        continueSort = await checkCurrentSortingRunStatus()
-            .then(() => true)
-            .catch(() => false);
-
-        // Aborting and returing if Stopped
+        // Check if stopped or paused - delay accoring to selected speed - again check
+        continueSort = await continueAfterDelayIfNotStopped();
+        // Return if stopped
         if (!continueSort)
             return;
-
-        // Delays according to selected speed
-        await sleep();
 
         store.dispatch(setValue(k, leftLocalArray[i]));
 
@@ -180,32 +153,17 @@ async function merge(localArray, leftIdx, midIdx, rightIdx) {
     // rightLocalArrau[], if there are any
     while (j < n2) {
 
-        // Checking if Paused or Stopped
-        continueSort = await checkCurrentSortingRunStatus()
-            .then(() => true)
-            .catch(() => false);
-
-        // Aborting and returing if Stopped
+        // Check if stopped or paused - delay accoring to selected speed - again check
+        continueSort = await continueAfterDelayIfNotStopped();
+        // Return if stopped
         if (!continueSort)
             return;
-
-        // Delays according to selected speed
-        await sleep();
 
         /**
          * j : midIdx + j + 1 because : 
          * they are indices of left and right copy array
          */
         store.dispatch(setCurrentlyChecking([midIdx + j + 1]));
-
-        // Checking if Paused or Stopped
-        continueSort = await checkCurrentSortingRunStatus()
-            .then(() => true)
-            .catch(() => false);
-
-        // Aborting and returing if Stopped
-        if (!continueSort)
-            return;
 
         // Delays according to selected speed
         await sleep();

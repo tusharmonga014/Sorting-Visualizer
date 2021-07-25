@@ -2,9 +2,8 @@ import { store } from "../store";
 import { swapValues } from "../actions/array";
 import { setCurrentlyChecking } from "../actions/currentlyChecking";
 import { addToSortedArray } from "../actions/sortedArray";
-import checkCurrentSortingRunStatus from "./helpers/checkCurrentStatus";
-import sleep from "./helpers/sleep";
 import { sortingCompleted } from "../actions/sortingRunStatus";
+import { continueAfterDelayIfNotStopped } from "./helpers/continueAfterDelayIfNotStopped";
 
 /**
  * Performs Bubble Sort on the store's Array
@@ -31,50 +30,32 @@ async function bubbleSort() {
         //Inner loop
         for (innerLoopIterator = 0; innerLoopIterator < arraySize - outerLoopIterator - 1; innerLoopIterator++) {
 
-            // Checking if Paused or Stopped
-            continueSort = await checkCurrentSortingRunStatus()
-                .then(() => true)
-                .catch(() => false);
-
-            // Aborting and returing if Stopped
+            // Check if stopped or paused - delay accoring to selected speed - again check
+            continueSort = await continueAfterDelayIfNotStopped();
+            // Return if stopped
             if (!continueSort)
                 return;
-
-            // Delays according to selected speed
-            await sleep();
 
             // Setting the current indices which are being checked to currentlyChecking
             store.dispatch(setCurrentlyChecking([innerLoopIterator, innerLoopIterator + 1]));
 
             if (localArray[innerLoopIterator] > localArray[innerLoopIterator + 1]) {
 
-                // Checking if Paused or Stopped
-                continueSort = await checkCurrentSortingRunStatus()
-                    .then(() => true)
-                    .catch(() => false);
-
-                // Aborting and returing if Stopped
+                // Check if stopped or paused - delay accoring to selected speed - again check
+                continueSort = await continueAfterDelayIfNotStopped();
+                // Return if stopped
                 if (!continueSort)
                     return;
-
-                // Delays according to selected speed
-                await sleep();
 
                 // Swaps the values in store's state Array
                 store.dispatch(swapValues(innerLoopIterator, innerLoopIterator + 1));
             }
 
-            // Checking if Paused or Stopped
-            continueSort = await checkCurrentSortingRunStatus()
-                .then(() => true)
-                .catch(() => false);
-
-            // Aborting and returing if Stopped
+            // Check if stopped or paused - delay accoring to selected speed - again check
+            continueSort = await continueAfterDelayIfNotStopped();
+            // Return if stopped
             if (!continueSort)
                 return;
-
-            // Delays according to selected speed
-            await sleep();
         }
 
         // Adding the 'j' which has been sorted to sortedArray

@@ -10,7 +10,9 @@ export const sortingRunStatus = (state = 'NOT_RUNNING', action) => {
         case 'STOPPED':
             return 'STOPPED';
         case 'COMPLETED':
-            return 'COMPLETED'
+            return 'COMPLETED';
+        case 'REFRESH':
+            return 'NOT_RUNNING';
 
         default: return state;
     }

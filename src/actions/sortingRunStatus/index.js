@@ -27,3 +27,9 @@ export const sortingCompleted = () => {
         type: 'COMPLETED'
     }
 }
+
+export const sortingRefresh = () => {
+    return {
+        type: 'REFRESH'
+    }
+}

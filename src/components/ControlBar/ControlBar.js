@@ -7,7 +7,7 @@ import { setSpeed } from "../../actions/speed/index.js";
 import { setSortedArray } from "../../actions/sortedArray/index.js";
 import { setAlgorithm } from "../../actions/algorithm";
 import { setCurrentlyChecking } from "../../actions/currentlyChecking/index.js";
-import { sortingContinued, sortingPaused, sortingStopped } from "../../actions/sortingRunStatus/index.js";
+import { sortingContinued, sortingPaused, sortingRefresh, sortingStopped } from "../../actions/sortingRunStatus/index.js";
 
 /**
  * Return a random value in specified range
@@ -61,6 +61,7 @@ const mapDispatchToProps = () => dispatch => ({
         const randomGeneratedArray = generateRandomArray(arraySize);
         dispatch(setArray(randomGeneratedArray));
         empty_CurrentlyArray_and_SortedArray(dispatch);
+        dispatch(sortingRefresh());
     },
 
     /**
@@ -68,8 +69,9 @@ const mapDispatchToProps = () => dispatch => ({
      * @param {*} selectedAlgo New algorithm to be set 
      */
     changeAlgorithm: (selectedAlgo) => {
-        empty_CurrentlyArray_and_SortedArray(dispatch);
         dispatch(setAlgorithm(selectedAlgo));
+        empty_CurrentlyArray_and_SortedArray(dispatch);
+        dispatch(sortingRefresh());
     },
 
     /**
@@ -77,8 +79,9 @@ const mapDispatchToProps = () => dispatch => ({
      * @param {*} selectedSpeed Selected Speed
      */
     changeSpeed: (selectedSpeed) => {
-        empty_CurrentlyArray_and_SortedArray(dispatch);
         dispatch(setSpeed(selectedSpeed));
+        empty_CurrentlyArray_and_SortedArray(dispatch);
+        dispatch(sortingRefresh());
     },
 
     /**
