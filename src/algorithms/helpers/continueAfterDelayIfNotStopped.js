@@ -5,7 +5,7 @@ import sleep from "./sleep";
  * Checks if not paused or stopped and moves when after delay time
  * @returns True for continuing, False for stopping
  */
-export async function continueAfterDelayIfNotStopped() {
+async function continueAfterDelayIfNotStopped() {
 
     // Checking if Paused or Stopped
     let checkFurther = await checkCurrentSortingRunStatus()
@@ -24,3 +24,5 @@ export async function continueAfterDelayIfNotStopped() {
 
     return finalCheckResult;
 }
+
+export default continueAfterDelayIfNotStopped;

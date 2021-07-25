@@ -3,7 +3,7 @@ import { swapValues } from "../actions/array";
 import { setCurrentlyChecking } from "../actions/currentlyChecking";
 import { addToSortedArray } from "../actions/sortedArray";
 import { sortingCompleted } from "../actions/sortingRunStatus";
-import { continueAfterDelayIfNotStopped } from "./helpers/continueAfterDelayIfNotStopped";
+import continueAfterDelayIfNotStopped from "./helpers/continueAfterDelayIfNotStopped";
 
 /**
  * Performs Bubble Sort on the store's Array

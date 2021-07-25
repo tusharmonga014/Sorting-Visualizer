@@ -3,7 +3,7 @@ import { setCurrentlyChecking } from "../actions/currentlyChecking";
 import { addToSortedArray } from "../actions/sortedArray";
 import { swapValues } from "../actions/array";
 import { setPivot } from "../actions/pivot";
-import { continueAfterDelayIfNotStopped } from "./helpers/continueAfterDelayIfNotStopped";
+import continueAfterDelayIfNotStopped from "./helpers/continueAfterDelayIfNotStopped";
 import checkCurrentSortingRunStatus from "./helpers/checkCurrentStatus";
 import { sortingCompleted } from "../actions/sortingRunStatus";
 
@@ -111,6 +111,9 @@ async function quickSortRecursive(localArray, startIdx, endIdx) {
         return;
 }
 
+/**
+ * Performs quick sort on the store's state array
+ */
 async function quickSort() {
 
     // Gets current state object

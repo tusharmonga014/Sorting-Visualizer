@@ -3,7 +3,7 @@ import { setCurrentlyChecking } from "../actions/currentlyChecking";
 import { sortingCompleted } from "../actions/sortingRunStatus";
 import { store } from "../store";
 import checkCurrentSortingRunStatus from "./helpers/checkCurrentStatus";
-import { continueAfterDelayIfNotStopped } from "./helpers/continueAfterDelayIfNotStopped";
+import continueAfterDelayIfNotStopped from "./helpers/continueAfterDelayIfNotStopped";
 import sleep from "./helpers/sleep";
 
 /**
