@@ -46,10 +46,10 @@ const BAR_COLOUR_PIVOT = 'rgb(102, 255, 51)';
 
 
 /**
- * Default selected sorting algorithm
+ * Default selected sorting algorithm Id
  * shown in dropdown algo selector
  */
-const DEFAULT_SELECTED_ALGORITHM = 'MERGE_SORT';
+const DEFAULT_SELECTED_ALGORITHM_ID = Number(0);
 
 /**
  * tells margin between bars
@@ -93,7 +93,7 @@ export {
     BAR_COLOUR_WHILE_CHECKING,
     BAR_COLOUR_SORTED,
     BAR_COLOUR_PIVOT,
-    DEFAULT_SELECTED_ALGORITHM,
+    DEFAULT_SELECTED_ALGORITHM_ID,
     MARGIN_BETWEEN_BARS,
     SCREEN_PERCENTAGE_TO_OCCUPY
 }

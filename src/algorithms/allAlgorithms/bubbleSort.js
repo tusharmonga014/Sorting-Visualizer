@@ -1,27 +1,37 @@
-import { store } from "../store";
-import { swapValues } from "../actions/array";
-import { setCurrentlyChecking } from "../actions/currentlyChecking";
-import { addToSortedArray } from "../actions/sortedArray";
-import { sortingCompleted } from "../actions/sortingRunStatus";
-import continueAfterDelayIfNotStopped from "./helpers/continueAfterDelayIfNotStopped";
+import { store } from "../../store";
+import { swapValues } from "../../actions/array";
+import { setCurrentlyChecking } from "../../actions/currentlyChecking";
+import { addToSortedArray } from "../../actions/sortedArray";
+import { sortingCompleted } from "../../actions/sortingRunStatus";
+import continueAfterDelayIfNotStopped from ".././helpers/continueAfterDelayIfNotStopped";
 
 /**
  * Performs Bubble Sort on the store's Array
  */
 async function bubbleSort() {
 
-    // Gets current state object
+
+    /** 
+     * Gets current state object
+     */
     const state = store.getState();
 
-    // Store's state Array
+    /** 
+     * Store's state Array
+     */
     const localArray = state.array;
-    // length of array
+
+    /**
+     * length of array
+     */
     const arraySize = state.array.length;
 
-    // Aborts the sort if value is False
+    /**
+     * Aborts the sort if value is false
+     */
     let continueSort = true;
 
-    // Bubble sort algorithm 
+    // Bubble Sort Algorithm 
 
     // Outer loop
     for (let outerLoopIterator = 0; outerLoopIterator < arraySize - 1; outerLoopIterator++) {

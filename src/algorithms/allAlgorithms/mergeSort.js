@@ -1,10 +1,11 @@
-import { setValue } from "../actions/array";
-import { setCurrentlyChecking } from "../actions/currentlyChecking";
-import { sortingCompleted } from "../actions/sortingRunStatus";
-import { store } from "../store";
-import checkCurrentSortingRunStatus from "./helpers/checkCurrentStatus";
-import continueAfterDelayIfNotStopped from "./helpers/continueAfterDelayIfNotStopped";
-import sleep from "./helpers/sleep";
+import { setValue } from "../../actions/array";
+import { setCurrentlyChecking } from "../../actions/currentlyChecking";
+import { setSortedArray } from "../../actions/sortedArray";
+import { sortingCompleted } from "../../actions/sortingRunStatus";
+import { store } from "../../store";
+import checkCurrentSortingRunStatus from "../helpers/checkCurrentStatus";
+import continueAfterDelayIfNotStopped from "../helpers/continueAfterDelayIfNotStopped";
+import sleep from "../helpers/sleep";
 
 /**
  * MERGE_SORT (arr[] , l, r)
@@ -64,7 +65,9 @@ async function merge(localArray, leftIdx, midIdx, rightIdx) {
     // Initial index of merged subarray
     let k = leftIdx;
 
-    // Aborts the sort if value is False
+    /**
+     * Aborts the sort if value is false
+     */
     let continueSort = true;
 
     while (i < n1 && j < n2) {
@@ -108,15 +111,6 @@ async function merge(localArray, leftIdx, midIdx, rightIdx) {
 
         k++;
     }
-
-    /**
-     * Reason for IMPORTANT in below steps : 
-     * Pushing the changes for even one 
-     * subarray is important as, if not done then 
-     * at last if some changes were made to array, 
-     * they will not get recorded, but such changes 
-     * 'in between' will get updated by next merge changes
-     */
 
     // Copy the remaining elements of
     // leftLocalArray[], if there are any
@@ -186,7 +180,15 @@ async function mergeSortRecursive(localArray, leftIdx, rightIdx) {
     if (leftIdx >= rightIdx) {
         return;//returns recursively
     }
-    var midIdx = leftIdx + parseInt((rightIdx - leftIdx) / 2);
+
+    /**
+     * Middle index
+     */
+    const midIdx = leftIdx + parseInt((rightIdx - leftIdx) / 2);
+
+    /**
+     * Aborts the sort if value is false
+     */
     let continueSort = await checkCurrentSortingRunStatus()
         .then(async () => {
             await mergeSortRecursive(localArray, leftIdx, midIdx)
@@ -206,12 +208,19 @@ async function mergeSortRecursive(localArray, leftIdx, rightIdx) {
  */
 async function mergeSort() {
 
-    // Gets current state object
+    /** 
+      * Gets current state object
+      */
     const state = store.getState();
 
-    // Store's state Array
+    /** 
+     * Store's state Array
+     */
     const localArray = state.array;
-    // length of array
+
+    /**
+     * length of array
+     */
     const arraySize = state.array.length;
 
     // Performing merge sort on the array
@@ -227,9 +236,11 @@ async function mergeSort() {
         .then(() => false)
         .catch(() => true);
 
-    // If sort was stopped then empty the currentlyChecking array
-    if (sortAborted)
+    // If sort was stopped then empty the currentlyChecking and sortedArray
+    if (sortAborted) {
+        store.dispatch(setSortedArray([]));
         store.dispatch(setCurrentlyChecking([]));
+    }
     // Else sort was not aborted then mark sort as COMPLETED
     else
         store.dispatch(sortingCompleted());

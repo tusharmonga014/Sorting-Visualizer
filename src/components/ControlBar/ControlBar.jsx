@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { DEFAULT_ARRAY_SIZE, DEFAULT_SELECTED_ALGORITHM, DEFAULT_SELECTED_SPEED, MAX_ARRAY_SIZE, MIN_ARRAY_SIZE, SORTING_SPEED_UPPER_LIMIT } from "../../defaults";
+import { DEFAULT_ARRAY_SIZE, DEFAULT_SELECTED_SPEED, MAX_ARRAY_SIZE, MIN_ARRAY_SIZE, SORTING_SPEED_UPPER_LIMIT } from "../../defaults";
 import "./ControlBar.css";
 
 class ControlBar extends Component {
@@ -21,31 +21,12 @@ class ControlBar extends Component {
   }
 
   /**
-   * Returns the algorithm name in Title Case
-   * @param {*} algorithm The algorithm whose name is to be returned in Title Case
-   * @returns Algorithm name in Title Case
-   */
-  getAlgorithmNameInTitleCase = (algorithm) => {
-    switch (algorithm) {
-      case 'BUBBLE_SORT': return 'Bubble Sort';
-      case 'MERGE_SORT': return 'Merge Sort';
-      case 'QUICK_SORT': return 'Quick Sort';
-      case 'HEAP_SORT': return 'Heap Sort';
-      default: {
-        console.error('No algorithm provided for conversion to title case');
-      }
-    }
-  }
-
-  /**
    * Changes the algorithm 
-   * @param {event} event Event which trigerred the function
+   * @param {Object} selectedAlgo Selected algorithm object
    */
-  changeAlgorithm = (event) => {
-    const selectedAlgo = event.target.value;
+  changeAlgorithm = (selectedAlgo) => {
+    document.getElementById('dropdown-algo-selector').innerText = selectedAlgo.name;
     this.props.changeAlgorithm(selectedAlgo);
-    const selectedAlgoTitleCase = this.getAlgorithmNameInTitleCase(selectedAlgo);
-    document.getElementById("dropdown-algo-selector").innerText = selectedAlgoTitleCase;
   }
 
   /**
@@ -240,7 +221,7 @@ class ControlBar extends Component {
 
 
   render() {
-    const { array } = this.props;
+    const { array, algorithms, defaultAlgorithm } = this.props;
     const arraySize = array.length;
 
     this.handleIfSortingCompleted();
@@ -265,37 +246,23 @@ class ControlBar extends Component {
               data-toggle="dropdown"
               aria-haspopup="true"
               aria-expanded="false">
-              {this.getAlgorithmNameInTitleCase(DEFAULT_SELECTED_ALGORITHM)}
+              {defaultAlgorithm.name}
             </button>
             <div className="dropdown-menu">
               <h1 className="dropdown-header text-large">Select Algorithm</h1>
-              <div className="dropdown-divider"></div>
-              <button className="dropdown-item"
-                value='MERGE_SORT'
-                onClick={this.changeAlgorithm}>
-                Merge Sort
-              </button>
-              <div className="dropdown-divider"></div>
-              <button
-                className="dropdown-item"
-                value='QUICK_SORT'
-                onClick={this.changeAlgorithm}>
-                Quick Sort
-              </button>
-              <div className="dropdown-divider"></div>
-              <button
-                className="dropdown-item"
-                value='BUBBLE_SORT'
-                onClick={this.changeAlgorithm}>
-                Bubble Sort
-              </button>
-              <div className="dropdown-divider"></div>
-              <button
-                className="dropdown-item"
-                value='HEAP_SORT'
-                onClick={this.changeAlgorithm}>
-                Heap Sort
-              </button>
+              {
+                algorithms.map((this_algorithm) => {
+                  return (
+                    <div key={this_algorithm.id}>
+                      <div className="dropdown-divider"></div>
+                      <button className="dropdown-item"
+                        onClick={() => this.changeAlgorithm(this_algorithm)}>
+                        {this_algorithm.name}
+                      </button>
+                    </div>
+                  );
+                })
+              }
             </div>
           </div>
         </div>

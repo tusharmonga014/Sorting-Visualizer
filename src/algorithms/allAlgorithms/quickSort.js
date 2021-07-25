@@ -1,11 +1,11 @@
-import { store } from "../store";
-import { setCurrentlyChecking } from "../actions/currentlyChecking";
-import { addToSortedArray } from "../actions/sortedArray";
-import { swapValues } from "../actions/array";
-import { setPivot } from "../actions/pivot";
-import continueAfterDelayIfNotStopped from "./helpers/continueAfterDelayIfNotStopped";
-import checkCurrentSortingRunStatus from "./helpers/checkCurrentStatus";
-import { sortingCompleted } from "../actions/sortingRunStatus";
+import { store } from "../../store";
+import { setCurrentlyChecking } from "../../actions/currentlyChecking";
+import { addToSortedArray, setSortedArray } from "../../actions/sortedArray";
+import { swapValues } from "../../actions/array";
+import { setPivot } from "../../actions/pivot";
+import continueAfterDelayIfNotStopped from "../helpers/continueAfterDelayIfNotStopped";
+import checkCurrentSortingRunStatus from "../helpers/checkCurrentStatus";
+import { sortingCompleted } from "../../actions/sortingRunStatus";
 
 /**
  * 
@@ -28,7 +28,9 @@ async function partition(localArray, startIdx, endIdx) {
      */
     let pivotIdx = startIdx;
 
-    // Aborts the sort if value is False
+    /**
+     * Aborts the sort if value is false
+     */
     let continueSort = true;
 
     for (let idx = startIdx; idx < endIdx; idx++) {
@@ -45,7 +47,7 @@ async function partition(localArray, startIdx, endIdx) {
          */
         store.dispatch(setCurrentlyChecking([idx, pivotIdx]));
 
-        if (localArray[idx] < pivotValue) {
+        if (localArray[idx] <= pivotValue) {
             // Check if stopped or paused - delay accoring to selected speed - again check
             continueSort = await continueAfterDelayIfNotStopped();
             // Return if stopped
@@ -71,8 +73,6 @@ async function partition(localArray, startIdx, endIdx) {
         store.dispatch(setCurrentlyChecking([]));
     }
 
-    // store.dispatch(setPivot(null));
-
     // Check if stopped or paused - delay accoring to selected speed - again check
     continueSort = await continueAfterDelayIfNotStopped();
     // Return if stopped
@@ -94,6 +94,11 @@ async function quickSortRecursive(localArray, startIdx, endIdx) {
     // Returns pivotIndex
     const pivotIdx = await partition(localArray, startIdx, endIdx);
 
+    store.dispatch(addToSortedArray(pivotIdx));
+
+    /**
+     * Aborts the sort if value is false
+     */
     let continueSort = await checkCurrentSortingRunStatus()
         .then(async () => {
             // Recursively apply the same logic to the left and right subarrays
@@ -116,12 +121,19 @@ async function quickSortRecursive(localArray, startIdx, endIdx) {
  */
 async function quickSort() {
 
-    // Gets current state object
+    /** 
+     * Gets current state object
+     */
     const state = store.getState();
 
-    // Store's state Array
+    /** 
+     * Store's state Array
+     */
     const localArray = state.array;
-    // length of array
+
+    /**
+     * length of array
+     */
     const arraySize = state.array.length;
 
     // Performing quick sort on the array
@@ -140,9 +152,11 @@ async function quickSort() {
         .then(() => false)
         .catch(() => true);
 
-    // If sort was stopped then empty the currentlyChecking array
-    if (sortAborted)
+    // If sort was stopped then empty the currentlyChecking and sortedArray
+    if (sortAborted) {
+        store.dispatch(setSortedArray([]));
         store.dispatch(setCurrentlyChecking([]));
+    }
     // Else sort was not aborted then mark sort as COMPLETED
     else
         store.dispatch(sortingCompleted());

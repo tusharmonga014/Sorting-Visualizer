@@ -1,10 +1,11 @@
-import { swapValues } from "../actions/array";
-import { setCurrentlyChecking } from "../actions/currentlyChecking";
-import { addToSortedArray } from "../actions/sortedArray";
-import { sortingCompleted } from "../actions/sortingRunStatus";
-import { store } from "../store";
-import checkCurrentSortingRunStatus from "./helpers/checkCurrentStatus";
-import continueAfterDelayIfNotStopped from "./helpers/continueAfterDelayIfNotStopped";
+import { swapValues } from "../../actions/array";
+import { setCurrentlyChecking } from "../../actions/currentlyChecking";
+import { addToSortedArray, setSortedArray } from "../../actions/sortedArray";
+import { sortingCompleted } from "../../actions/sortingRunStatus";
+import { store } from "../../store";
+import checkCurrentSortingRunStatus from "../helpers/checkCurrentStatus";
+import continueAfterDelayIfNotStopped from "../helpers/continueAfterDelayIfNotStopped";
+
 
 /**
  * Since a Binary Heap is a Complete Binary Tree, it can be easily represented
@@ -35,7 +36,9 @@ async function heapify(localArray, nodeIndex, arraySize) {
     const left = 2 * nodeIndex + 1; // left = 2*i + 1
     const right = 2 * nodeIndex + 2; // right = 2*i + 2
 
-    // Aborts the sort if value is False
+    /**
+     * Aborts the sort if value is false
+     */
     let continueSort = true;
 
     // If left child is larger than root
@@ -81,10 +84,16 @@ async function heapify(localArray, nodeIndex, arraySize) {
  * @param {Array} localArray An array which represents heap
  */
 async function HeapSort(localArray) {
-    var arraySize = localArray.length;
+    /**
+     * length of array
+     */
+    const arraySize = localArray.length;
 
     // Build heap (rearrange localArray)
     for (let nodeIndex = Math.floor(arraySize / 2) - 1; nodeIndex >= 0; nodeIndex--) {
+        /**
+         * Aborts the sort if value is false
+         */
         let continueSort = await checkCurrentSortingRunStatus()
             .then(async () => {
                 await heapify(localArray, nodeIndex, arraySize);
@@ -99,7 +108,9 @@ async function HeapSort(localArray) {
     // One by one extract an element from heap
     for (let extractElementIterator = arraySize - 1; extractElementIterator > 0; extractElementIterator--) {
 
-        // Check if stopped or paused - delay accoring to selected speed - again check
+        /**
+         * Aborts the sort if value is false
+         */
         let continueSort = await continueAfterDelayIfNotStopped();
         // Return if stopped
         if (!continueSort)
@@ -132,10 +143,15 @@ async function HeapSort(localArray) {
  * Performs Heap Sort on the store's Array
  */
 async function heapSort() {
-    // Gets current state object
+
+    /** 
+     * Gets current state object
+     */
     const state = store.getState();
 
-    // Store's state Array
+    /** 
+     * Store's state Array
+     */
     const localArray = state.array;
 
     // We perform the Heap Sort on store's state array
@@ -151,9 +167,11 @@ async function heapSort() {
         .then(() => false)
         .catch(() => true);
 
-    // If sort was stopped then empty the currentlyChecking array
-    if (sortAborted)
+    // If sort was stopped then empty the currentlyChecking and sortedArray
+    if (sortAborted) {
+        store.dispatch(setSortedArray([]));
         store.dispatch(setCurrentlyChecking([]));
+    }
     // Else sort was not aborted then mark sort as COMPLETED
     else
         store.dispatch(sortingCompleted());

@@ -1,7 +1,7 @@
 import ControlBar from "./ControlBar.jsx";
 import { connect } from "react-redux";
-import { ARRAY_MIN_VALUE, ARRAY_MAX_VALUE } from "../../defaults/index.js";
-import sort from "../../algorithms"
+import { ARRAY_MIN_VALUE, ARRAY_MAX_VALUE, DEFAULT_SELECTED_ALGORITHM_ID } from "../../defaults/index.js";
+import { ALGORITHMS, getAlgorithmById, sort } from "../../algorithms"
 import { setArray } from "../../actions/array";
 import { setSpeed } from "../../actions/speed/index.js";
 import { setSortedArray } from "../../actions/sortedArray/index.js";
@@ -48,7 +48,9 @@ const mapStateToProps = (state) => {
     const array = state.array;
     const algorithm = state.algorithm;
     const sortingRunStatus = state.sortingRunStatus;
-    return { array, algorithm, sortingRunStatus };
+    const algorithms = ALGORITHMS;
+    const defaultAlgorithm = getAlgorithmById(DEFAULT_SELECTED_ALGORITHM_ID);
+    return { array, algorithm, sortingRunStatus, algorithms, defaultAlgorithm };
 }
 
 const mapDispatchToProps = () => dispatch => ({
