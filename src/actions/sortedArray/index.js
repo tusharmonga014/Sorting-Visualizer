@@ -19,14 +19,3 @@ export const addToSortedArray = (payload) => {
         payload: payload
     }
 };
-
-/**
- * Adds the given array to sortedArray
- * @param {Array} payload An array to be added to sortedArray
- */
-export const addArrayToSortedArray = (payload) => {
-    return {
-        type: 'ADD_ARRAY_TO_SORTEDARRAY',
-        payload: payload
-    }
-}
