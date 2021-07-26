@@ -1,6 +1,7 @@
 import { store } from "../store";
 import { sortingStarted } from "../actions/sortingRunStatus";
 import ALGORITHMS from "./ALGORITHMS";
+import getAlgorithmById from "./getAlgorithmById";
 
 /**
  * Starts the sorting process
@@ -14,7 +15,13 @@ function sort() {
     /**
      * Algorithm object in store's state
      */
-    const algorithm = state.algorithm;
+    let algorithm = state.algorithm;
+
+    /**
+     * As when default is selected, it only has id in its object,
+     * so we can get the whole object by this id
+     */
+    algorithm = getAlgorithmById(algorithm.id);
 
     if (ALGORITHMS.includes(algorithm)) {
         // If valid algorithm is selected, call its function

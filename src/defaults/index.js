@@ -49,7 +49,7 @@ const BAR_COLOUR_PIVOT = 'rgb(102, 255, 51)';
  * Default selected sorting algorithm Id
  * shown in dropdown algo selector
  */
-const DEFAULT_SELECTED_ALGORITHM_ID = Number(0);
+const DEFAULT_SELECTED_ALGORITHM_ID = 0;
 
 /**
  * tells margin between bars

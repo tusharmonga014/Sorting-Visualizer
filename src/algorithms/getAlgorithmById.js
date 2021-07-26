@@ -3,6 +3,7 @@ import ALGORITHMS from "./ALGORITHMS";
 /**
  * Return algorithm object of specified Id
  * @param {*} algorithmId Algorithm Id
+ * @returns Algorithm object
  */
 function getAlgorithmById(algorithmId) {
 
