@@ -38,18 +38,44 @@ const BAR_COLOUR_WHILE_CHECKING = 'blue';
 /**
  * Bar colour when it has been sorted
  */
-const BAR_COLOUR_SORTED = 'purple';
+const BAR_COLOUR_SORTED = 'rgb(184, 0, 162)';
 /**
  * Bar colour when it is pivot
  */
-const BAR_COLOUR_PIVOT = 'rgb(102, 255, 51)';
-
+const BAR_COLOUR_PIVOT = 'rgb(255, 117, 26)';
 
 /**
  * Default selected sorting algorithm Id
  * shown in dropdown algo selector
  */
 const DEFAULT_SELECTED_ALGORITHM_ID = 0;
+
+/**
+ * Time delay (in ms) after finish 
+ * of sorting completion effect
+ */
+const DELAY_AFTER_COMPLETESORT_EFFECT = 1100;
+/**
+ * Time delay (in ms) before start 
+ * of sorting completion effect
+ */
+const DELAY_BEFORE_COMPLETESORT_EFFECT = (arraySize) => {
+    return arraySize <= 50 ? 700
+        : arraySize <= 100 ? 500
+            : arraySize <= 150 ? 400
+                : 300;
+}
+/**
+ * Returns time (in ms) between each bar effect
+ * @param {number} arraySize Length of the array
+ * @returns Time (in ms) between each bar effect
+ */
+const TIME_BETWEEN_EACH_BAR_EFFECT = (arraySize) => {
+    return arraySize <= 10 ? 8
+        : arraySize <= 50 ? 6
+            : arraySize <= 150 ? 4
+                : 3;
+}
 
 /**
  * tells margin between bars
@@ -59,7 +85,7 @@ const DEFAULT_SELECTED_ALGORITHM_ID = 0;
 const MARGIN_BETWEEN_BARS = (arraySize) => {
     return arraySize <= 10 ? 4
         : arraySize <= 50 ? 2
-            : 1
+            : 1;
 };
 
 /**
@@ -94,6 +120,9 @@ export {
     BAR_COLOUR_SORTED,
     BAR_COLOUR_PIVOT,
     DEFAULT_SELECTED_ALGORITHM_ID,
+    DELAY_BEFORE_COMPLETESORT_EFFECT,
+    DELAY_AFTER_COMPLETESORT_EFFECT,
+    TIME_BETWEEN_EACH_BAR_EFFECT,
     MARGIN_BETWEEN_BARS,
     SCREEN_PERCENTAGE_TO_OCCUPY
 }

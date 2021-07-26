@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { BAR_COLOUR_PIVOT, BAR_COLOUR_SORTED, BAR_COLOUR_WHILE_CHECKING, BAR__COLOUR_DEFAULT, MARGIN_BETWEEN_BARS, SCREEN_PERCENTAGE_TO_OCCUPY } from "../../defaults";
+import { BAR_COLOUR_PIVOT, BAR_COLOUR_SORTED, BAR_COLOUR_WHILE_CHECKING, BAR__COLOUR_DEFAULT, DELAY_AFTER_COMPLETESORT_EFFECT, DELAY_BEFORE_COMPLETESORT_EFFECT, MARGIN_BETWEEN_BARS, SCREEN_PERCENTAGE_TO_OCCUPY, TIME_BETWEEN_EACH_BAR_EFFECT } from "../../defaults";
 import "./ArrayBars.css";
 
 class ArrayBars extends Component {
@@ -61,12 +61,54 @@ class ArrayBars extends Component {
         /**
          * Opacity becomes normal when mouse leaves the bar,
          * Height Display Box again becomes hidden,
-         * Z-index of box is again set to 0 to prevent its area
+         * Z-index of box is again set to -1 to prevent its area
          * from stopping mouse over effect for its bar
          */
         bar.style.opacity = 1;
         barHeightDisplayBox.setAttribute('hidden', true);
-        barHeightDisplayBox.style.zIndex = 0;
+        barHeightDisplayBox.style.zIndex = -1;
+    }
+
+    giveSortingCompletedEffectWhenCompleted = () => {
+        const { array, sortingRunStatus } = this.props;
+
+        /**
+         * Length of store's state array
+         */
+        const arraySize = array.length;
+
+        // If sorting is commpleted show effect
+        if (sortingRunStatus === 'COMPLETED') {
+            const allBars = document.getElementsByClassName('bar');
+
+            // After DELAY_BEFORE_COMPLETESORT_EFFECT ms of sorting completion show effect
+            setTimeout(() => {
+
+                // Iterating on each bar at gap of TIME_BETWEEN_EACH_BAR_EFFECT ms
+                for (let barsIterator = 0; barsIterator < allBars.length; barsIterator++) {
+                    setTimeout(() => {
+                        console.log('yes');
+                        // Add effect class which has background color as !important
+                        allBars[barsIterator].classList.add('complete-sort-effect');
+                    }, TIME_BETWEEN_EACH_BAR_EFFECT(arraySize) * barsIterator);
+                }
+            }, DELAY_BEFORE_COMPLETESORT_EFFECT(arraySize));
+
+            /**
+             * Remove efect after : (as all setTimeouts start together in a loop)
+             * DELAY_BEFORE_COMPLETESORT_EFFECT (waiting time for showing effect)
+             * (TIME_BETWEEN_EACH_BAR_EFFECT * arraySize) ms (time taken for each effect)
+             * DELAY_AFTER_COMPLETESORT_EFFECT stop and display time for effect
+             */
+            setTimeout(() => {
+                // Iterating on each bar
+                console.log('now');
+                for (let barsIterator = 0; barsIterator < allBars.length; barsIterator++) {
+                    allBars[barsIterator].classList.remove('complete-sort-effect');
+                }
+            }, DELAY_BEFORE_COMPLETESORT_EFFECT(arraySize) + (TIME_BETWEEN_EACH_BAR_EFFECT(arraySize) * arraySize) + DELAY_AFTER_COMPLETESORT_EFFECT);
+            // },5000);
+        }
     }
 
     render() {
@@ -78,6 +120,8 @@ class ArrayBars extends Component {
         const marginBetween = this.getMarginBetweenBars(arraySize);
         const barWidth = this.getBarWidth(arraySize, barsDisplayAreaWidth, marginBetween);
         const displayBarHeight = window.screen.width >= 500 && arraySize < 23 ? true : false;
+
+        this.giveSortingCompletedEffectWhenCompleted();
 
         return (
             <div>

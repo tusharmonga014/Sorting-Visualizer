@@ -29,6 +29,7 @@ body {
     border-style: solid;
     padding: 0 3px;
     position: absolute;
+    z-index: -1;
 }
 
 .bar {
@@ -36,6 +37,10 @@ body {
     color: white;
     display: inline-block;
     padding-top: 2px;
+}
+
+.complete-sort-effect {
+    background-color: rgb(5, 253, 5) !important;
 }
 
 .base-block {
