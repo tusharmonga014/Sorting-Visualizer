@@ -37,3 +37,15 @@ export const setValue = (index, value) => {
         }
     }
 }
+
+/**
+ * Removes value at specific index in store's state array
+ * @param {number} index Index at which value needs to be removed
+ * @returns An action object with type and payload
+ */
+export const removeValue = (index) => {
+    return {
+        type: 'REMOVE_VALUE',
+        payload: index
+    }
+}

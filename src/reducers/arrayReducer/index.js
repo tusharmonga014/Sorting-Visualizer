@@ -8,6 +8,8 @@ export const array = (state = [], action) => {
             return swapValuesInArray(state, action.payload.firstIdx, action.payload.secondIdx);
         case 'SET_VALUE':
             return setValueInArrayUsingSplice(state, action.payload.id, 1, action.payload.data);
+        case 'REMOVE_VALUE':
+            return state.slice(0, action.payload).concat(state.slice(action.payload + 1));
         default: return state;
     }
 }
