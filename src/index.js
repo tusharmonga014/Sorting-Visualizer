@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 
 ReactDOM.render(
 
-  //wrapping the app around store
+  // Wrapping the app around store
   <Provider store={store}>
     <App />
   </Provider>,
