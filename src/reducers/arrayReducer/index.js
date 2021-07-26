@@ -10,6 +10,8 @@ export const array = (state = [], action) => {
             return setValueInArrayUsingSplice(state, action.payload.id, 1, action.payload.data);
         case 'REMOVE_VALUE':
             return state.slice(0, action.payload).concat(state.slice(action.payload + 1));
+        case 'INSERT_VALUE':
+            return state.slice(0, action.payload.id).concat(action.payload.data).concat(state.slice(action.payload));
         default: return state;
     }
 }

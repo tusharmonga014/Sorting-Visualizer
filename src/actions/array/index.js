@@ -25,7 +25,7 @@ export const swapValues = (firstIdx, secondIdx) => {
 /**
  * Sets value at specific index in store's State Array
  * @param {number} index Index at which value needs to be stored,
- * @param {*} value The value which needs to be inserted
+ * @param {*} value The value which needs to be set
  * @returns An action object with type and payload
  */
 export const setValue = (index, value) => {
@@ -47,5 +47,21 @@ export const removeValue = (index) => {
     return {
         type: 'REMOVE_VALUE',
         payload: index
+    }
+}
+
+/**
+ * Inserts value at specific index in store's state array
+ * @param {number} index Index at which value needs to be inserted
+ * * @param {*} value The value which needs to be inserted
+ * @returns An action object with type and payload
+ */
+export const insertValue = (index, value) => {
+    return {
+        type: 'INSERT_VALUE',
+        payload: {
+            id: index,
+            data: value
+        }
     }
 }
