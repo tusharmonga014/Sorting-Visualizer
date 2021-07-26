@@ -80,7 +80,7 @@
 }
 
 @media only screen and (max-width: 576px) {
-    .text-disable-when-running {
+    .text-slider {
         max-width: 35%;
         margin-left: 5%;
     }
