@@ -5,7 +5,19 @@ import { addToSortedArray } from "../../actions/sortedArray";
 import { sortingCompleted } from "../../actions/sortingRunStatus";
 import continueAfterDelayIfNotStopped from "../helpers/continueAfterDelayIfNotStopped";
 
-// Function to sort an array using insertion sort
+/**
+ * INSERTION SORT : 
+ * 
+ * Insertion sort is a simple sorting algorithm that works similar to the way 
+ * you sort playing cards in your hands. The array is virtually split into a 
+ * sorted and an unsorted part. Values from the unsorted part are picked and 
+ * placed at the correct position in the sorted part.
+ * 
+ */
+
+/**
+ * Performs insertion sort on the store's state array
+ */
 async function insertionSort() {
 
     /** 

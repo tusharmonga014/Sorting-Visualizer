@@ -6,6 +6,16 @@ import { sortingCompleted } from "../../actions/sortingRunStatus";
 import continueAfterDelayIfNotStopped from ".././helpers/continueAfterDelayIfNotStopped";
 
 /**
+ * BUBBLE SORT : 
+ * 
+ * Bubble Sort is the simplest sorting algorithm that works by repeatedly 
+ * swapping the adjacent elements if they are in wrong order.
+ * 
+ * It works on the principle of keeping the heaviest element(or bubble)
+ * at last position in each iteration and working on remaining in next.
+ */
+
+/**
  * Performs Bubble Sort on the store's Array
  */
 async function bubbleSort() {
