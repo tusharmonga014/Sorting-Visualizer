@@ -82,14 +82,13 @@ const mapDispatchToProps = () => dispatch => ({
      */
     changeSpeed: (selectedSpeed) => {
         dispatch(setSpeed(selectedSpeed));
-        empty_CurrentlyArray_and_SortedArray(dispatch);
-        dispatch(sortingRefresh());
     },
 
     /**
      * Starts the sorting
      */
     startSorting: () => {
+        dispatch(sortingRefresh());
         empty_CurrentlyArray_and_SortedArray(dispatch);
         sort();
     },
