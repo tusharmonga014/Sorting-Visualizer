@@ -3,6 +3,7 @@ import mergeSort from "./allAlgorithms/mergeSort";
 import quickSort from "./allAlgorithms/quickSort";
 import heapSort from "./allAlgorithms/heapSort";
 import insertionSort from "./allAlgorithms/insertionSort";
+import selectionSort from "./allAlgorithms/selectionSort";
 
 /**
  * An array of objects where each 
@@ -43,7 +44,7 @@ const ALGORITHMS = [
         id: 5,
         name: 'Selection Sort',
         value: 'SELECTION_SORT',
-        // function: ()
+        function: selectionSort
     }
 ]
 
