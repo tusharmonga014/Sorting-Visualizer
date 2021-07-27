@@ -1,11 +1,10 @@
-import { setValue } from "../../actions/array";
+import { store } from "../../store";
 import { setCurrentlyChecking } from "../../actions/currentlyChecking";
 import { setSortedArray } from "../../actions/sortedArray";
 import { sortingCompleted } from "../../actions/sortingRunStatus";
-import { store } from "../../store";
+import { setArray } from "../../actions/array";
 import checkCurrentSortingRunStatus from "../helpers/checkCurrentStatus";
 import continueAfterDelayIfNotStopped from "../helpers/continueAfterDelayIfNotStopped";
-import sleep from "../helpers/sleep";
 
 /**
  * MERGE_SORT (arr[] , l, r)
@@ -22,55 +21,110 @@ import sleep from "../helpers/sleep";
  */
 
 /**
+ * Dispatches new array with merged values of given data 
+ * in order of : remaining array on left, merging value, 
+ * left array, right array, remaining array on left.
+ * @param {number} mainArrayIterator The mainIterator or K
+ * @param {number} rightIdx End limit of current array(inclusive)
+ * @param {*} valueToBeMerged The value which needs to be inserted
+ * @param {Array} leftLocalArray Current remaining left array of current array
+ * @param {Array} rightLocalArray Current remaining right array of current array
+ */
+function mergeInArrayAndDispatch(mainArrayIterator, rightIdx, valueToBeMerged, leftLocalArray, rightLocalArray) {
+
+    /** 
+     * Gets current state object
+     */
+    const state = store.getState();
+
+    /** 
+     * Store's state Array
+     */
+    const localArray = state.array;
+
+    /**
+     * Array on the left side of current 
+     * array-(which remains to be merge)
+     */
+    const remainingArrayOnLeft = localArray.slice(0, mainArrayIterator);
+
+    /**
+     * Array on the right side of current 
+     * array-(which remains to be merge)
+     */
+    const remainingArrayOnRight = localArray.slice(rightIdx + 1);
+
+    /**
+     * New merged array which will be returned
+     */
+    let mergedArray = [];
+
+    // Merging the values in new array
+    mergedArray = mergedArray.concat(remainingArrayOnLeft).concat(valueToBeMerged).concat(leftLocalArray).concat(rightLocalArray).concat(remainingArrayOnRight);
+
+    // Setting it as the new state array in store
+    store.dispatch(setArray(mergedArray));
+}
+
+/**
  * Merges two subarrays of localArray[].
  * First subarray is localArray[l..m]
  * Second subarray is localArray[m+1..r]
- * @param {*} localArray Original Array 
- * @param {*} leftIdx Starting index for first subarray
- * @param {*} midxIdx Ending Index (inclusive) for first subarray
- * @param {*} rightIdx Ending Index (inclusive) for second subarray 
- *                      which start from midIdx + 1
+ * @param {number} leftIdx Starting index for first subarray
+ * @param {number} midxIdx Ending Index (inclusive) for first subarray
+ * @param {number} rightIdx Ending Index (inclusive) for second subarray which start from midIdx + 1
  */
-async function merge(localArray, leftIdx, midIdx, rightIdx) {
+async function merge(leftIdx, midIdx, rightIdx) {
 
-    // Sizes of two subarray
-    var n1 = midIdx - leftIdx + 1;
-    var n2 = rightIdx - midIdx;
-
-    // Creating temp arrays
-    var leftLocalArray = new Array(n1);
-    var rightLocalArray = new Array(n2);
-
-    // Copy data to temp arrays
-    for (let i = 0; i < n1; i++)
-        leftLocalArray[i] = localArray[[leftIdx + i]];
-    for (let j = 0; j < n2; j++)
-        rightLocalArray[j] = localArray[midIdx + 1 + j];
-
-    /**
-     *  ..................................................
-     *
-     *  MERGING THE TEMP ARRAYS BACK INTO localArray[l..r]
-     * (Using Merge-K-Sorted-LinkedLists Algorithm)
-     * 
-     *  ..................................................
+    /** 
+     * Gets current state object
      */
+    const state = store.getState();
 
-    // Initial index of first subarray
-    let i = 0;
-
-    // Initial index of second subarray
-    let j = 0;
-
-    // Initial index of merged subarray
-    let k = leftIdx;
+    /** 
+     * Store's state Array
+     */
+    const localArray = state.array;
 
     /**
      * Aborts the sort if value is false
      */
     let continueSort = true;
 
-    while (i < n1 && j < n2) {
+    /**
+     * Left subarray array of current array
+     */
+    var leftLocalArray = localArray.slice(leftIdx, midIdx + 1);
+    /**
+     * Right subarray array of current array
+     */
+    var rightLocalArray = localArray.slice(midIdx + 1, rightIdx + 1);
+
+    /**
+     *  ..................................................
+     *
+     *  MERGING THE TEMP ARRAYS BACK INTO localArray[l..r]
+     *  (Using Merge-K-Sorted-LinkedLists Algorithm)
+     * 
+     *  ..................................................
+     */
+
+    /**
+     * Iterator for left subarray
+     */
+    let leftArrayIterator = leftIdx;
+    /**
+     * Iterator for right subarray
+     */
+    let rightArrayIterator = midIdx + 1;
+
+    /**
+     * Iterator or K, for state's array
+     */
+    let mainArrayIterator = leftIdx;
+
+
+    while (leftLocalArray.length > 0 && rightLocalArray.length > 0) {
 
         // Check if stopped or paused - delay accoring to selected speed - again check
         continueSort = await continueAfterDelayIfNotStopped();
@@ -79,12 +133,18 @@ async function merge(localArray, leftIdx, midIdx, rightIdx) {
             return;
 
         /**
-         * i : leftIdx + 1, j : midIdx + j + 1 because : 
+         * leftArrayIterator : mainArrayIterator + 1
+         * rightArrayIterator :  mainArrayIterator + leftLocalArray.length + 1
          * they are indices of left and right copy array
          */
-        store.dispatch(setCurrentlyChecking([leftIdx + i, midIdx + j + 1]));
+        store.dispatch(setCurrentlyChecking([leftArrayIterator, rightArrayIterator]));
 
-        if (leftLocalArray[i] <= rightLocalArray[j]) {
+        if (leftLocalArray[0] <= rightLocalArray[0]) {
+            // Taking first value of left array of current array
+            const leftArrayValueToBeMerged = leftLocalArray[0];
+
+            // Removing first value of left array of current array
+            leftLocalArray.shift();
 
             // Check if stopped or paused - delay accoring to selected speed - again check
             continueSort = await continueAfterDelayIfNotStopped();
@@ -92,11 +152,14 @@ async function merge(localArray, leftIdx, midIdx, rightIdx) {
             if (!continueSort)
                 return;
 
-            store.dispatch(setValue(k, leftLocalArray[i]));
+            mergeInArrayAndDispatch(mainArrayIterator, rightIdx, leftArrayValueToBeMerged, leftLocalArray, rightLocalArray);
 
-            i++;
-        }
-        else {
+        } else {
+            // Taking first value of right array of current array
+            const rightArrayValueToBeMerged = rightLocalArray[0];
+
+            // Removing first value of left array of current array
+            rightLocalArray.shift();
 
             // Check if stopped or paused - delay accoring to selected speed - again check
             continueSort = await continueAfterDelayIfNotStopped();
@@ -104,17 +167,26 @@ async function merge(localArray, leftIdx, midIdx, rightIdx) {
             if (!continueSort)
                 return;
 
-            store.dispatch(setValue(k, rightLocalArray[j]));
-
-            j++;
+            mergeInArrayAndDispatch(mainArrayIterator, rightIdx, rightArrayValueToBeMerged, leftLocalArray, rightLocalArray);
         }
 
-        k++;
+        
+        leftArrayIterator = mainArrayIterator + 1;
+        rightArrayIterator = mainArrayIterator + leftLocalArray.length + 1;
+        store.dispatch(setCurrentlyChecking([leftArrayIterator, rightArrayIterator]));
+        mainArrayIterator++;
     }
 
-    // Copy the remaining elements of
-    // leftLocalArray[], if there are any
-    while (i < n1) {
+    while (leftLocalArray.length > 0) {
+
+        // Marking leftArrayIterator
+        store.dispatch(setCurrentlyChecking([leftArrayIterator]));
+
+        // Taking first value of left array of current array
+        const leftArrayValueToBeMerged = leftLocalArray[0];
+
+        // Removing first value of left array of current array
+        leftLocalArray.shift();
 
         // Check if stopped or paused - delay accoring to selected speed - again check
         continueSort = await continueAfterDelayIfNotStopped();
@@ -122,14 +194,22 @@ async function merge(localArray, leftIdx, midIdx, rightIdx) {
         if (!continueSort)
             return;
 
-        // Delays according to selected speed
-        await sleep();
+        mergeInArrayAndDispatch(mainArrayIterator, rightIdx, leftArrayValueToBeMerged, leftLocalArray, rightLocalArray);
 
-        /**
-         * i : leftIdx + 1 because : 
-         * they are indices of left and right copy array
-         */
-        store.dispatch(setCurrentlyChecking([leftIdx + i]));
+        leftArrayIterator = mainArrayIterator + 1;
+        mainArrayIterator++;
+    }
+
+    while (rightLocalArray.length > 0) {
+
+        // Marking leftArrayIterator
+        store.dispatch(setCurrentlyChecking([rightArrayIterator]));
+
+        // Taking first value of right array of current array
+        const rightArrayValueToBeMerged = rightLocalArray[0];
+
+        // Removing first value of left array of current array
+        rightLocalArray.shift();
 
         // Check if stopped or paused - delay accoring to selected speed - again check
         continueSort = await continueAfterDelayIfNotStopped();
@@ -137,37 +217,14 @@ async function merge(localArray, leftIdx, midIdx, rightIdx) {
         if (!continueSort)
             return;
 
-        store.dispatch(setValue(k, leftLocalArray[i]));
+        mergeInArrayAndDispatch(mainArrayIterator, rightIdx, rightArrayValueToBeMerged, leftLocalArray, rightLocalArray);
 
-        i++;
-        k++;
+        rightArrayIterator = mainArrayIterator + leftLocalArray.length + 1;
+        mainArrayIterator++;
     }
 
-    // Copy the remaining elements of
-    // rightLocalArrau[], if there are any
-    while (j < n2) {
-
-        // Check if stopped or paused - delay accoring to selected speed - again check
-        continueSort = await continueAfterDelayIfNotStopped();
-        // Return if stopped
-        if (!continueSort)
-            return;
-
-        /**
-         * j : midIdx + j + 1 because : 
-         * they are indices of left and right copy array
-         */
-        store.dispatch(setCurrentlyChecking([midIdx + j + 1]));
-
-        // Delays according to selected speed
-        await sleep();
-
-        store.dispatch(setValue(k, rightLocalArray[j]));
-
-        j++;
-        k++;
-    }
-
+    // Emptying the currentlyChecking array
+    store.dispatch(setCurrentlyChecking([]));
 }
 
 /**
@@ -176,7 +233,7 @@ async function merge(localArray, leftIdx, midIdx, rightIdx) {
  * @param {*} leftIdx Starting index of subarray
  * @param {*} rightIdx Ending Index (inclusive) of subarray 
  */
-async function mergeSortRecursive(localArray, leftIdx, rightIdx) {
+async function mergeSortRecursive(leftIdx, rightIdx) {
     if (leftIdx >= rightIdx) {
         return;//returns recursively
     }
@@ -191,9 +248,9 @@ async function mergeSortRecursive(localArray, leftIdx, rightIdx) {
      */
     let continueSort = await checkCurrentSortingRunStatus()
         .then(async () => {
-            await mergeSortRecursive(localArray, leftIdx, midIdx)
-            await mergeSortRecursive(localArray, midIdx + 1, rightIdx);
-            await merge(localArray, leftIdx, midIdx, rightIdx);
+            await mergeSortRecursive(leftIdx, midIdx)
+            await mergeSortRecursive(midIdx + 1, rightIdx);
+            await merge(leftIdx, midIdx, rightIdx);
             return true;
         })
         .catch(() => false);
@@ -221,10 +278,10 @@ async function mergeSort() {
     /**
      * length of array
      */
-    const arraySize = state.array.length;
+    const arraySize = localArray.length;
 
     // Performing merge sort on the array
-    await mergeSortRecursive(localArray, 0, arraySize - 1);
+    await mergeSortRecursive(0, arraySize - 1);
 
     /**
      * After sorting sets the Sorting Running Status to COMPLETED

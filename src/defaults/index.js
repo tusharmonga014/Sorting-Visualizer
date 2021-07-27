@@ -73,8 +73,9 @@ const DELAY_BEFORE_COMPLETESORT_EFFECT = (arraySize) => {
 const TIME_BETWEEN_EACH_BAR_EFFECT = (arraySize) => {
     return arraySize <= 10 ? 8
         : arraySize <= 50 ? 6
-            : arraySize <= 150 ? 4
-                : 3;
+            : arraySize <= 100 ? 4
+            : arraySize <= 150 ? 3
+                : 2;
 }
 
 /**
