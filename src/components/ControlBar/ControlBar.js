@@ -8,6 +8,7 @@ import { setSortedArray } from "../../actions/sortedArray/index.js";
 import { setAlgorithm } from "../../actions/algorithm";
 import { setCurrentlyChecking } from "../../actions/currentlyChecking/index.js";
 import { sortingContinued, sortingPaused, sortingRefresh, sortingStopped } from "../../actions/sortingRunStatus/index.js";
+import { setPivot } from "../../actions/pivot/index.js";
 
 /**
  * Return a random value in specified range
@@ -39,9 +40,10 @@ const generateRandomArray = (arraySize) => {
  * and dispatches the methods for reseting 
  * sortedArray and currentlyChecking array
  */
-const empty_CurrentlyArray_and_SortedArray = (dispatch) => {
+const empty_CurrentlyArray_SortedArray_Pivot = (dispatch) => {
     dispatch(setCurrentlyChecking([]));
     dispatch(setSortedArray([]));
+    dispatch(setPivot(null));
 }
 
 const mapStateToProps = (state) => {
@@ -62,7 +64,7 @@ const mapDispatchToProps = () => dispatch => ({
     generateArray: (arraySize) => {
         const randomGeneratedArray = generateRandomArray(arraySize);
         dispatch(setArray(randomGeneratedArray));
-        empty_CurrentlyArray_and_SortedArray(dispatch);
+        empty_CurrentlyArray_SortedArray_Pivot(dispatch);
         dispatch(sortingRefresh());
     },
 
@@ -72,7 +74,7 @@ const mapDispatchToProps = () => dispatch => ({
      */
     changeAlgorithm: (selectedAlgo) => {
         dispatch(setAlgorithm(selectedAlgo));
-        empty_CurrentlyArray_and_SortedArray(dispatch);
+        empty_CurrentlyArray_SortedArray_Pivot(dispatch);
         dispatch(sortingRefresh());
     },
 
@@ -89,7 +91,7 @@ const mapDispatchToProps = () => dispatch => ({
      */
     startSorting: () => {
         dispatch(sortingRefresh());
-        empty_CurrentlyArray_and_SortedArray(dispatch);
+        empty_CurrentlyArray_SortedArray_Pivot(dispatch);
         sort();
     },
 
@@ -115,7 +117,7 @@ const mapDispatchToProps = () => dispatch => ({
      */
     stopSorting: () => {
         dispatch(sortingStopped());
-        empty_CurrentlyArray_and_SortedArray(dispatch);
+        empty_CurrentlyArray_SortedArray_Pivot(dispatch);
     }
 });
 
