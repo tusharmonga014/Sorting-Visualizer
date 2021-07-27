@@ -105,7 +105,6 @@ class ArrayBars extends Component {
                     allBars[barsIterator].classList.remove('complete-sort-effect');
                 }
             }, DELAY_BEFORE_COMPLETESORT_EFFECT(arraySize) + (TIME_BETWEEN_EACH_BAR_EFFECT(arraySize) * arraySize) + DELAY_AFTER_COMPLETESORT_EFFECT);
-            // },5000);
         }
     }
 
