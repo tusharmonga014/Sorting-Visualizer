@@ -87,7 +87,6 @@ class ArrayBars extends Component {
                 // Iterating on each bar at gap of TIME_BETWEEN_EACH_BAR_EFFECT ms
                 for (let barsIterator = 0; barsIterator < allBars.length; barsIterator++) {
                     setTimeout(() => {
-                        console.log('yes');
                         // Add effect class which has background color as !important
                         allBars[barsIterator].classList.add('complete-sort-effect');
                     }, TIME_BETWEEN_EACH_BAR_EFFECT(arraySize) * barsIterator);
@@ -102,7 +101,6 @@ class ArrayBars extends Component {
              */
             setTimeout(() => {
                 // Iterating on each bar
-                console.log('now');
                 for (let barsIterator = 0; barsIterator < allBars.length; barsIterator++) {
                     allBars[barsIterator].classList.remove('complete-sort-effect');
                 }
